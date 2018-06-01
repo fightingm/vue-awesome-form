@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <span v-if="!inTable">{{title}}</span><textarea type="text" v-model="msg"></textarea>
+  <div class="jf-form-item">
+    <label class="jf-form-item-label" v-if="!inTable">{{title}}</label>
+    <div class="jf-form-item-content">
+      <div class="jf-input-wrapper jf-input-type">
+        <textarea v-model="msg" wrap="soft" autocomplete="off" spellcheck="false" rows="2" class="jf-input"></textarea>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -28,4 +33,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+textarea.jf-input {
+    max-width: 100%;
+    height: auto;
+    vertical-align: bottom;
+    font-size: 14px;
+    min-height: 52px;
+}
 </style>

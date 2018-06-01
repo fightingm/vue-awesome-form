@@ -18,6 +18,13 @@ export default {
 </script>
 
 <style>
+*, :after, :before {
+    box-sizing: border-box;
+}
+[type=checkbox], [type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -26,4 +33,55 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+.jf-form-item {
+  margin-bottom: 24px;
+}
+.jf-form .jf-form-item-label {
+  width: 80px;
+  text-align: right;
+  vertical-align: middle;
+  float: left;
+  font-size: 12px;
+  color: #495060;
+  line-height: 1;
+  padding: 10px 12px 10px 0;
+  box-sizing: border-box;
+}
+.jf-form-item-content {
+    position: relative;
+    line-height: 32px;
+    font-size: 12px;
+    margin-left: 80px;
+}
+.jf-input-wrapper {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    vertical-align: middle;
+    line-height: normal;
+}
+.jf-input {
+    display: inline-block;
+    width: 100%;
+    height: 32px;
+    line-height: 1.5;
+    padding: 4px 7px;
+    font-size: 12px;
+    border: 1px solid #dddee1;
+    border-radius: 4px;
+    color: #495060;
+    background-color: #fff;
+    background-image: none;
+    position: relative;
+    cursor: text;
+    transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;
+}
+.jf-input:focus {
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(45,140,240,.2);
+}
+.jf-input:focus, .jf-input:hover {
+    border-color: #57a3f3;
+}
+
 </style>

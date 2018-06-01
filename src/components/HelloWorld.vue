@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <form class="jf-form">
     <the-tree
       v-for="(val, key, index) in orderProperty(formData.schema)"
       :key="index"
@@ -7,7 +7,7 @@
       :objVal="formData.value[key]"
       :model="val"></the-tree>
     <button @click="handleSubmit">提交</button>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -181,6 +181,7 @@ export default {
                   "province": "北京省",
                   "city": "北京市"
                 },
+                "education": [],
                 "pets": [{
                   "type": 1,
                   "name": "Walter"
@@ -208,5 +209,8 @@ li {
 }
 a {
   color: #42b983;
+}
+.jf-form {
+  text-align: left;
 }
 </style>

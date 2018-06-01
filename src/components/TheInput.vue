@@ -1,6 +1,12 @@
 <template>
-  <div>
-    <span v-if="!inTable">{{title}}</span><input type="text" v-model="msg">
+  <div class="jf-form-item">
+    <label class="jf-form-item-label" v-if="!inTable">{{title}}</label>
+    <div class="jf-form-item-content">
+      <div class="jf-input-wrapper jf-input-type">
+        <input class="jf-input" type="text" v-model="msg">
+      </div>
+    </div>
+    
   </div>
 </template>
 

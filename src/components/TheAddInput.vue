@@ -7,7 +7,7 @@
       <input type="text" :value="item" @input="handleInput(index, $event)" >
       <button @click="del(index)">删除</button>
     </div>
-    <button @click="add">添加</button>
+    <span @click="add">添加</span>
   </div>
 </template>
 
