@@ -25,6 +25,9 @@ export default {
     box-sizing: border-box;
     padding: 0;
 }
+[type=reset], [type=submit], button, html [type=button] {
+    -webkit-appearance: button;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -62,7 +65,7 @@ export default {
 }
 .jf-input {
     display: inline-block;
-    width: 100%;
+    /* width: 100%; */
     height: 32px;
     line-height: 1.5;
     padding: 4px 7px;

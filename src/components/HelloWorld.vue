@@ -6,18 +6,20 @@
       :objKey="key"
       :objVal="formData.value[key]"
       :model="val"></the-tree>
-    <button @click="handleSubmit">提交</button>
+    <Button @click="handleSubmit" type="primary">提交</Button>
   </form>
 </template>
 
 <script>
 import { store } from '../store'
 import TheTree from './TheTree';
+import Button from './button'
 
 export default {
   name: 'HelloWorld',
   components: {
-    TheTree
+    TheTree,
+    Button
   },
   computed: {
     schemaForm: function () {

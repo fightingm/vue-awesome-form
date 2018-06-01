@@ -4,25 +4,36 @@
     <div 
       v-for="(item, index) in objVal"
       :key="index">
-      <input type="text" :value="item" @input="handleInput(index, $event)" >
-      <button @click="del(index)">删除</button>
+      <the-input 
+        :objKey="getObjKey(index)" 
+        :objVal="getObjVal(index)"
+        :inTable="true">
+        {{item}}-{{getObjVal(index)}}
+        <Button @click="del(index)" type="warning">删除</Button>
+        </the-input>
+      <!-- <input type="text" :value="item" @input="handleInput(index, $event)" > -->
+      
+      
     </div>
-    <span @click="add">添加</span>
+    <Button @click="add" type="primary">添加</Button>
   </div>
 </template>
 
 <script>
 import { store } from '../store'
+import TheInput from './TheInput';
+import Button from './button'
+
 export default {
   name: 'TheAddInput',
+  components: {
+    TheInput,
+    Button
+  },
   props: ['title', 'objKey', 'objVal'],
   watch: {
     msg: function(newVal, oldVal) {
       console.log(newVal. oldVal);
-      // store.commit('setFormData', {
-      //   key: this.keyName,
-      //   value: newVal
-      // });
     }
   },
   computed: {
@@ -33,14 +44,22 @@ export default {
     }
   },
   methods: {
+    getObjKey(index) {
+      return this.keyName.concat([index]);
+    },
+    getObjVal(index) {
+      return this.curVal[index];
+    },
     add() {
-      const newVal = this.curVal.concat(["test"]);
+      const newVal = this.curVal.concat([""]);
       this.setFormData(newVal);
     },
     del(index) {
+      console.log(index);
       const newVal = this.curVal.filter((item, idx) => {
         return idx !== index;
       });
+      console.log(newVal);
       this.setFormData(newVal);
     },
     handleInput(index, e) {
