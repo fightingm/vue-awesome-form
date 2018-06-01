@@ -1,0 +1,98 @@
+<template>
+  <div>
+    {{title}}: 
+    <table>
+      <thead>
+        <th
+          v-for="(val, key, index) in columns"
+          :key="index"
+        >{{val.title}}</th>
+      </thead>
+      <tr
+        v-for="(item, index) in objVal"
+        :key="index">
+        <td
+          v-for="(val, key, idx) in columns"
+          :key="idx">
+          <component 
+            :is="val.type" 
+            :objKey="getObjKey(index, key)" 
+            :objVal="getObjVal(index, key)"
+            :inTable="true" 
+            v-bind="val"></component>
+          <!-- <the-input title='' :objKey='getObjKey(index, key)' :objVal='getObjVal(index, key)'></the-input> -->
+          <!-- <input type="text" :value="val" @input="handleInput(index, $event)" > -->
+        </td>
+        <td>
+          <button @click="del(index)">删除</button>
+        </td>
+      </tr>
+    </table>
+    <button @click="add">添加一行</button>
+  </div>
+</template>
+
+<script>
+import { store } from '../store'
+import TheInput from './TheInput';
+import TheTextArea from './TheTextArea';
+import TheSelect from './TheSelect';
+import TheRadio from './TheRadio';
+import TheCheckbox from './TheCheckbox';
+
+export default {
+  name: 'TheTable',
+  components: {
+    TheInput,
+    TheTextArea,
+    TheSelect,
+    TheRadio,
+    TheCheckbox
+  },
+  props: ['title', 'objKey', 'objVal', "addDefault", "columns"],
+  computed: {
+    curVal() {
+       return this.keyName.reduce((pre, cur) => {
+                return pre[cur];
+              }, store.state.formValue)
+    }
+  },
+  methods: {
+    getObjKey(index, key) {
+      return this.keyName.concat([index, key]);
+    },
+    getObjVal(index, key) {
+      return this.curVal[index][key];
+    },
+    handleInput() {
+
+    },
+    add() {
+      const newVal = this.curVal.concat([this.addDefault]);
+      this.setFormData(newVal);
+    },
+    del(index) {
+      const newVal = this.curVal.filter((item, idx) => {
+        return idx !== index;
+      });
+      this.setFormData(newVal);
+    },
+    setFormData(value) {
+      store.commit('setFormData', {
+        key: this.keyName,
+        value
+      });
+    }
+  },
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      keyName: this.objKey
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>
