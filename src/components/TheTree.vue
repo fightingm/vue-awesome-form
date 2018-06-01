@@ -3,7 +3,7 @@
     <component :is="model.type" :objKey="objKey" :objVal="objVal" v-bind="model"></component>
     <div v-if="model.properties">
       <the-tree
-        v-for="(val, key, index) in model.properties"
+        v-for="(val, key, index) in orderProperty(model.properties)"
         :key="index"
         :objKey="getObjKeys(objKey, key)"
         :objVal="getObjVal(key)"
@@ -50,6 +50,26 @@ export default {
       } else {
         return [oldKeys, newKey];
       }
+    },
+    // 根据propertyOrder 从小到大排序
+    orderProperty(oldObj) {
+      // 先遍历对象，生成数组
+      // 对数组排序
+      // 生成一个新的对象
+      const keys = Object.keys(oldObj);
+      // 如果对象只有一个字段，不需要排序
+      if(keys.length <= 1) return oldObj;
+      return keys.map(key => {
+        return {
+          key,
+          val: oldObj[key]
+        };
+      }).sort((pre, cur) => {
+        return (pre.val.propertyOrder || 999) - (cur.val.propertyOrder || 999);
+      }).reduce((pre, cur) => {
+        pre[cur.key] = cur.val;
+        return pre;
+      }, {});
     }
   },
   data () {

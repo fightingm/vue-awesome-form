@@ -1,7 +1,7 @@
 <template>
   <div>
     <the-tree
-      v-for="(val, key, index) in formData.schema"
+      v-for="(val, key, index) in orderProperty(formData.schema)"
       :key="index"
       :objKey="key"
       :objVal="formData.value[key]"
@@ -35,65 +35,63 @@ export default {
   methods: {
     handleSubmit: function() {
       console.log(store.state.formValue);
+    },
+     // 根据propertyOrder 从小到大排序
+    orderProperty(oldObj) {
+      // 先遍历对象，生成数组
+      // 对数组排序
+      // 生成一个新的对象
+      const keys = Object.keys(oldObj);
+      // 如果对象只有一个字段，不需要排序
+      if(keys.length <= 1) return oldObj;
+      return keys.map(key => {
+        return {
+          key,
+          val: oldObj[key]
+        };
+      }).sort((pre, cur) => {
+        return (pre.val.propertyOrder || 999) - (cur.val.propertyOrder || 999);
+      }).reduce((pre, cur) => {
+        pre[cur.key] = cur.val;
+        return pre;
+      }, {});
     }
   },
   data () {
     return {
       "formData": {
         "schema": {
-          "psbConfig": {
+          "person": {
                 "type": "TheTitle",
-                "title": "万维 psb配置",
+                "title": "个人信息",
                 "properties": {
-                    "psb-wanwei-user-password": {
+                    "name": {
                         "type": "TheInput",
-                        "title": "psb万维用户密码"
+                        "title": "姓名"
                     },
-                    "psb-wanwei-hotelId": {
-                        "type": "TheTitle",
-                        "title": "psb-万维房间ID",
-                        "properties": {
-                          "test": {
-                            "type": "TheInput",
-                            "title": "测试"
-                          }
-                        }
+                    "age": {
+                        "type": "TheInput",
+                        "title": "年龄"
                     },
-                    "calcType": {
-                      "type": "TheSelect",
-                      "title": "房费计算方式",
-                      "options": [
-                        {
-                          "value": 1,
-                          "label": "按首日房费比例计算"
-                        },
-                        {
-                          "value": 2,
-                          "label": "固定金额"
-                        }
-                      ]
-                    },
-                    "searchByOrderNoImplemented": {
+                    "gender": {
                       "type": "TheRadio",
-                      "title": "是否实现订单号查询接口",
+                      "title": "性别",
+                      "propertyOrder": 1,
                       "options": [
                         {
                           "value": 1,
-                          "label": "苹果"
+                          "label": "男"
                         },
                         {
                           "value": 2,
-                          "label": "安卓"
-                        },
-                        {
-                          "value": 3,
-                          "label": "windowsPhone"
+                          "label": "女"
                         }
                       ]
                     },
                     "interests": {
                       "type": "TheCheckbox",
                       "title": "兴趣爱好",
+                      "propertyOrder": 2,
                       "options": [
                         {
                           "value": 1,
@@ -109,83 +107,83 @@ export default {
                         }
                       ]
                     },
-                    "checkInTicketNote": {
+                    "location": {
+                      "type": "TheTitle",
+                      "title": "地址信息",
+                      "propertyOrder": 3,
+                      "properties": {
+                        "province": {
+                          "type": "TheInput",
+                          "title": "省份"
+                        },
+                        "city": {
+                          "type": "TheInput",
+                          "title": "市"
+                        }
+                      }
+                    },
+                    "education": {
                       "type": "TheAddInput",
-                      "title": "入住成功后打印小票后追加的须知",
+                      "title": "教育信息",
                       "addText": "添加"
                     },
-                    "psb-wanwei-jdbc-url": {
+                    "introduce": {
                         "type": "TheTextArea",
-                        "title": "psb-万维JDBC地址"
+                        "title": "个人介绍"
                     },
-                    "psb-wanwei-user-name": {
-                        "type": "TheInput",
-                        "title": "psb-万维用户名"
-                    },
-                    "timeSegments": {
+                    "pets": {
                       "type": "TheTable",
-                      "title": "分段加收房费",
+                      "title": "宠物信息",
                       "columns": {
-                        "amount": {
+                        "name": {
                           "type": "TheInput",
-                          "title": "固定金额"
+                          "title": "名字"
                         },
-                        "fromHour": {
-                          "type": "TheInput",
-                          "title": "从(含)"
-                        },
-                        "calcType": {
+                        "type": {
                           "type": "TheSelect",
-                          "title": "房费计算方式",
+                          "title": "类型",
+                          "propertyOrder": 1,
                           "options": [
                             {
                               "value": 1,
-                              "label": "按首日房费比例计算"
+                              "label": "猫"
                             },
                             {
                               "value": 2,
-                              "label": "固定金额"
+                              "label": "狗"
+                            },
+                            {
+                              "value": 3,
+                              "label": "鸟"
+                            },
+                            {
+                              "value": 4,
+                              "label": "其他"
                             }
                           ]
-                        },
-                        "percent": {
-                          "type": "TheInput",
-                          "title": "百分比"
-                        },
-                        "toHour": {
-                          "type": "TheInput",
-                          "title": "至(不含)"
                         }
                       },
                       "addDefault": {
-                        "amount": "固定金额1",
-                        "calcType": 2,
-                        "fromHour": "从(含)1",
-                        "toHour": "至(不含)1",
-                        "percent": "百分比1"
+                        "type": 2,
+                        "name": "Walter"
                       }
                     }
                 }
             }
         },
         "value": {
-            "psbConfig": {
-                "psb-wanwei-user-password": "11",
-                "psb-wanwei-hotelId": {
-                  "test": "22"
-                },
-                "psb-wanwei-jdbc-url": "33",
-                "psb-wanwei-user-name": "44",
-                "calcType": 2,
-                "searchByOrderNoImplemented": 3,
+            "person": {
+                "name": "Jeremy Dorn",
+                "age": 25,
+                "gender": 1,
                 "interests": [2],
-                "checkInTicketNote": ["das", "???"],
-                "timeSegments": [{
-                  "amount": "固定金额",
-                  "calcType": 1,
-                  "fromHour": "从(含)",
-                  "toHour": "至(不含)",
-                  "percent": "百分比"
+                "location": {
+                  "province": "北京省",
+                  "city": "北京市"
+                },
+                "pets": [{
+                  "type": 1,
+                  "name": "Walter"
                 }]
             }
         }

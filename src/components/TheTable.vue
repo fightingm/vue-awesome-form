@@ -4,7 +4,7 @@
     <table>
       <thead>
         <th
-          v-for="(val, key, index) in columns"
+          v-for="(val, key, index) in orderColumns"
           :key="index"
         >{{val.title}}</th>
       </thead>
@@ -12,7 +12,7 @@
         v-for="(item, index) in objVal"
         :key="index">
         <td
-          v-for="(val, key, idx) in columns"
+          v-for="(val, key, idx) in orderColumns"
           :key="idx">
           <component 
             :is="val.type" 
@@ -55,6 +55,9 @@ export default {
        return this.keyName.reduce((pre, cur) => {
                 return pre[cur];
               }, store.state.formValue)
+    },
+    orderColumns() {
+      return this.orderProperty(this.columns);
     }
   },
   methods: {
@@ -63,9 +66,6 @@ export default {
     },
     getObjVal(index, key) {
       return this.curVal[index][key];
-    },
-    handleInput() {
-
     },
     add() {
       const newVal = this.curVal.concat([this.addDefault]);
@@ -82,6 +82,26 @@ export default {
         key: this.keyName,
         value
       });
+    },
+    // 根据propertyOrder 从小到大排序
+    orderProperty(oldObj) {
+      // 先遍历对象，生成数组
+      // 对数组排序
+      // 生成一个新的对象
+      const keys = Object.keys(oldObj);
+      // 如果对象只有一个字段，不需要排序
+      if(keys.length <= 1) return oldObj;
+      return keys.map(key => {
+        return {
+          key,
+          val: oldObj[key]
+        };
+      }).sort((pre, cur) => {
+        return (pre.val.propertyOrder || 999) - (cur.val.propertyOrder || 999);
+      }).reduce((pre, cur) => {
+        pre[cur.key] = cur.val;
+        return pre;
+      }, {});
     }
   },
   data () {
