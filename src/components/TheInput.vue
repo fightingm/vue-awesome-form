@@ -12,28 +12,19 @@
 </template>
 
 <script>
-import { store } from '../store'
+
 export default {
   name: 'TheInput',
   props: ['title', 'objKey', 'objVal', 'inTable'],
-  watch: {
-    msg: function(newVal, oldVal) {
-      // store.commit('setFormData', {
-      //   key: this.keyName,
-      //   value: newVal
-      // });
-    }
-  },
   computed: {
     msg: {
       get: function() {
         return this.objVal;
       },
-      set: function() {
-        console.log('???', this.msg);
-        store.commit('setFormData', {
+      set: function(value) {
+        this.$store.commit('setFormData', {
           key: this.keyName,
-          value: 'xxxxx'
+          value
         });
       }
     }

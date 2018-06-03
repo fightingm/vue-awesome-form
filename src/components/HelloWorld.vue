@@ -17,6 +17,7 @@ import Button from './button'
 
 export default {
   name: 'HelloWorld',
+  store,
   components: {
     TheTree,
     Button

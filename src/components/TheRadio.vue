@@ -19,23 +19,29 @@
 </template>
 
 <script>
-import { store } from '../store'
+
 export default {
   name: 'TheRadio',
   props: ["options", 'title', 'objKey', 'objVal', 'inTable'],
-  watch: {
-    msg: function(newVal, oldVal) {
-      store.commit('setFormData', {
-        key: this.keyName,
-        value: newVal
-      });
+  computed: {
+    msg: {
+      get () {
+        return this.objVal;
+        // return this.keyName.reduce((pre, cur) => {
+        //         return pre[cur];
+        //       }, this.$store.state.formValue)
+      },
+      set (value) {
+        this.$store.commit('setFormData', {
+          key: this.keyName,
+          value
+        });
+      }
     }
   },
   data () {
     return {
-      msg: this.objVal,
       keyName: this.objKey
-      // options: this.options
     }
   }
 }

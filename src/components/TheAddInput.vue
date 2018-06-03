@@ -4,13 +4,12 @@
     <div 
       v-for="(item, index) in objVal"
       :key="index">
-      <the-input 
+      <the-input
         :objKey="getObjKey(index)" 
         :objVal="getObjVal(index)"
         :inTable="true">
-        {{item}}-{{getObjVal(index)}}
         <Button @click="del(index)" type="warning">删除</Button>
-        </the-input>
+      </the-input>
       <!-- <input type="text" :value="item" @input="handleInput(index, $event)" > -->
       
       
@@ -20,7 +19,20 @@
 </template>
 
 <script>
-import { store } from '../store'
+// 使用index作为key,假设当前有两个input,
+// 删除第一个input,这时重新渲染，原来的第二个input的index就变成了0，和之前第一个input的key相同
+// 虚拟dom比较两个key相同，就会把第一个input保留，而把第二个input删除
+// 但是store中删除的数据却是第一个input的数据，暴露了第二个input的输入数据
+// 这时我们传递过去的objVal就变成了store中数组的第0项，也就是第二个input的输入数据
+// 在the-input组件中如果在data中获取objVal，只会在创建的时候获取
+// 所以想要拿到新的objVal，需要在computed中获取
+// 所以最终的结果就是删除第一个input,结果把第二个input给删除了，
+// 但是我们把第二个input的数据传给了第一个input，所以看起来像是我们删除了第一个input
+
+// 不推荐使用index作为key,比如向数组中插入一项，
+// 按理说应该只会渲染插入的那一项，其他的应该不变，
+// 但是插入了一项之后，原来的index就发生了变化
+// 每一条数据都要重新渲染
 import TheInput from './TheInput';
 import Button from './button'
 
@@ -31,16 +43,11 @@ export default {
     Button
   },
   props: ['title', 'objKey', 'objVal'],
-  watch: {
-    msg: function(newVal, oldVal) {
-      console.log(newVal. oldVal);
-    }
-  },
   computed: {
     curVal() {
        return this.keyName.reduce((pre, cur) => {
                 return pre[cur];
-              }, store.state.formValue)
+              }, this.$store.state.formValue)
     }
   },
   methods: {
@@ -55,11 +62,9 @@ export default {
       this.setFormData(newVal);
     },
     del(index) {
-      console.log(index);
       const newVal = this.curVal.filter((item, idx) => {
         return idx !== index;
       });
-      console.log(newVal);
       this.setFormData(newVal);
     },
     handleInput(index, e) {
@@ -73,7 +78,7 @@ export default {
       this.setFormData(newVal);
     },
     setFormData(value) {
-      store.commit('setFormData', {
+      this.$store.commit('setFormData', {
         key: this.keyName,
         value
       });
@@ -81,7 +86,6 @@ export default {
   },
   data () {
     return {
-      msg: this.objVal,
       keyName: this.objKey
     }
   }

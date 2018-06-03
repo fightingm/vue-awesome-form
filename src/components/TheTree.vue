@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { store } from '../store'
 
 import TheTitle from './TheTitle';
 import TheInput from './TheInput';

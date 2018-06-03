@@ -1,18 +1,45 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
+    <p
+        v-for="(item, index) in test"
+        :key="item.id"
+    >
+        <span @click="del(index)">{{item.val}}</span>
+        <input type="text" />
+    </p>
     <HelloWorld/>
   </div>
 </template>
 
 <script>
-
 import HelloWorld from './components/HelloWorld'
 
 export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  methods: {
+      del(index) {
+        //   this.test = [1,3,2];
+          this.test.splice(index, 1);
+      }
+  },
+  data() {
+      return {
+          index: 0,
+          test: [{
+              id:1,
+              val: 1
+          }, {
+              id: 2,
+              val: 2
+          }, {
+              id: 3,
+              val: 3
+          }]
+      }
   }
 }
 </script>
