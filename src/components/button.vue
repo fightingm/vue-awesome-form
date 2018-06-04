@@ -7,7 +7,7 @@
     </button>
 </template>
 <script>
-    const prefixCls = 'ivu-btn'
+    const prefixCls = 'jf-btn'
     export default {
         name: 'Button',
         props: ['type', 'shape', 'size', 'htmlType', 'long'],
@@ -40,27 +40,23 @@
     };
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 
-.ivu-btn, .ivu-btn:active, .ivu-btn:focus {
+.jf-btn, .jf-btn:active, .jf-btn:focus {
     outline: 0;
 }
-.ivu-btn {
+.jf-btn {
     display: inline-block;
     margin-bottom: 0;
     font-weight: 400;
     text-align: center;
     vertical-align: middle;
-    -ms-touch-action: manipulation;
     touch-action: manipulation;
     cursor: pointer;
     background-image: none;
     border: 1px solid transparent;
     white-space: nowrap;
     line-height: 1.5;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     padding: 6px 15px;
     font-size: 12px;
@@ -70,14 +66,19 @@
     background-color: #f7f7f7;
     border-color: #dddee1;
 }
-.ivu-btn-primary {
+.jf-btn-primary {
     color: #fff;
     background-color: #2d8cf0;
     border-color: #2d8cf0;
 }
-.ivu-btn-warning {
+.jf-btn-warning {
     color: #fff;
     background-color: #f90;
     border-color: #f90;
+}
+.jf-btn-error {
+    color: #fff;
+    background-color: #ed3f14;
+    border-color: #ed3f14;
 }
 </style>

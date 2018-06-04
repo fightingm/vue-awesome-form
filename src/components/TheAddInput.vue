@@ -1,20 +1,23 @@
 <template>
-  <div>
-    {{title}}: 
-    <div 
-      v-for="(item, index) in objVal"
-      :key="index">
-      <the-input
-        :objKey="getObjKey(index)" 
-        :objVal="getObjVal(index)"
-        :inTable="true">
-        <Button @click="del(index)" type="warning">删除</Button>
-      </the-input>
-      <!-- <input type="text" :value="item" @input="handleInput(index, $event)" > -->
-      
-      
+  <div :class="['jf-form-item', { 'jf-form-item-hasLabel': !noLabel } ]">
+    <label class="jf-form-item-label" v-if="!noLabel">{{title}}</label>
+    <div class="jf-form-item-content">
+      <div 
+        v-for="(item, index) in objVal"
+        :key="index">
+        <the-input
+          :objKey="getObjKey(index)" 
+          :objVal="getObjVal(index)"
+          :noLabel="true">
+          <div style="margin-left: 8px">
+            <Button @click="del(index)" type="warning">删除</Button>
+          </div>
+        </the-input>
+      </div>
     </div>
-    <Button @click="add" type="primary">添加</Button>
+    <div style="text-align: right; margin-top: 10px; margin-bottom: 10px;">
+      <Button @click="add" type="primary">添加</Button>
+    </div>
   </div>
 </template>
 
@@ -42,7 +45,7 @@ export default {
     TheInput,
     Button
   },
-  props: ['title', 'objKey', 'objVal'],
+  props: ['title', 'objKey', 'objVal', 'noLabel'],
   computed: {
     curVal() {
        return this.keyName.reduce((pre, cur) => {

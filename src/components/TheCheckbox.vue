@@ -1,6 +1,6 @@
 <template>
-  <div class="jf-form-item">
-    <label class="jf-form-item-label" v-if="!inTable">{{title}}</label>
+  <div :class="['jf-form-item', { 'jf-form-item-hasLabel': !noLabel } ]">
+    <label class="jf-form-item-label" v-if="!noLabel">{{title}}</label>
     <div class="jf-form-item-content">
       <div class="jf-checkbox-group">
         <label
@@ -22,7 +22,7 @@
 
 export default {
   name: 'TheCheckbox',
-  props: ["options", 'title', 'objKey', 'objVal', 'inTable'],
+  props: ["options", 'title', 'objKey', 'objVal', 'noLabel'],
   computed: {
     msg: {
       get () {

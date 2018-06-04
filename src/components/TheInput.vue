@@ -1,6 +1,6 @@
 <template>
-  <div class="jf-form-item">
-    <label class="jf-form-item-label" v-if="!inTable">{{title}}</label>
+  <div :class="['jf-form-item', noLabel ? 'jf-form-item-noLabel' : 'jf-form-item-hasLabel' ]">
+    <label class="jf-form-item-label" v-if="!noLabel">{{title}}</label>
     <div class="jf-form-item-content">
       <div class="jf-input-wrapper jf-input-type">
         <input class="jf-input" type="text" v-model="msg">
@@ -15,7 +15,7 @@
 
 export default {
   name: 'TheInput',
-  props: ['title', 'objKey', 'objVal', 'inTable'],
+  props: ['title', 'objKey', 'objVal', 'noLabel'],
   computed: {
     msg: {
       get: function() {

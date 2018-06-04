@@ -1,28 +1,36 @@
 <template>
-  <div class="ivu-form-item">
-    <label v-if="!inTable" class="ivu-form-item-label">{{title}}</label>
-    <div class="ivu-form-item-content">
-      <div class="ivu-select ivu-select-single">
-        <div tabindex="0" class="ivu-select-selection">
+  <div :class="['jf-form-item', { 'jf-form-item-hasLabel': !noLabel } ]">
+    <label v-if="!noLabel" class="jf-form-item-label">{{title}}</label>
+    <div class="jf-form-item-content">
+      <div class="jf-select">
+        <div tabindex="0" class="jf-select-selection">
           <input type="hidden" value="shanghai">
-          <div>
-            <span class="ivu-select-selected-value">London</span>
-            <i class="ivu-icon ivu-icon-arrow-down-b ivu-select-arrow">🔽</i>
+          <div @click="toggle">
+            <span class="jf-select-selected-value">{{selectVal.label}}</span>
+            <i 
+              :class="[
+                'jf-select-arrow', 
+                { 'jf-select-arrow-up': selectVisible }, 
+                { 'jf-select-arrow-down': !selectVisible }
+              ]"
+            ></i>
           </div>
         </div>
-        <div class="ivu-select-dropdown" x-placement="bottom">
-            <ul class="ivu-select-dropdown-list">
-              <li
-                v-for="(item, index) in options"
-                :key="index"
-                :class="[
-                  'ivu-select-item',
-                  'ivu-select-item-focus',
-                  { 'ivu-select-item-selected': item.value === msg }
-                ]"
-              >{{item.label}}</li>
-            </ul>
-        </div>
+        <transition name="transition-drop">
+          <div v-show="selectVisible" class="jf-select-dropdown" x-placement="bottom">
+              <ul class="jf-select-dropdown-list">
+                <li
+                  v-for="(item, index) in options"
+                  :key="index"
+                  :class="[
+                    'jf-select-item',
+                    { 'jf-select-item-selected': item.value === msg }
+                  ]"
+                  @click="select(item.value)"
+                >{{item.label}}</li>
+              </ul>
+          </div>
+        </transition>
       </div>
     </div>
     <!-- <select v-model="msg">
@@ -38,7 +46,7 @@
 
 export default {
   name: 'TheSelect',
-  props: ["options", 'title', 'objKey', 'objVal', 'inTable'],
+  props: ["options", 'title', 'objKey', 'objVal', 'noLabel'],
   computed: {
     msg: {
       get () {
@@ -53,11 +61,31 @@ export default {
           value
         });
       }
+    },
+    selectVal () {
+        return this.options.filter(item => {
+          return item.value === this.objVal;
+        })[0];
+      }
+  },
+  methods: {
+    toggle() {
+      this.selectVisible = !this.selectVisible;
+    },
+    select(value) {
+      if(this.msg !== value) {
+        this.$store.commit('setFormData', {
+          key: this.keyName,
+          value
+        });
+      }
+      this.toggle();
     }
   },
   data () {
     return {
-      keyName: this.objKey
+      keyName: this.objKey,
+      selectVisible: false
       // options: this.options
     }
   }
@@ -65,8 +93,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.ivu-select {
+<style lang="postcss" scoped>
+.jf-select {
     display: inline-block;
     width: 100%;
     box-sizing: border-box;
@@ -74,14 +102,20 @@ export default {
     color: #495060;
     font-size: 14px;
     line-height: normal;
+    position: relative;
+    & ul {
+        padding-left: 0!important;
+        list-style-type: none;
+    }
+    & li {
+        margin-bottom: 0;
+    }
 }
-.ivu-select-selection {
+.jf-select-selection {
     display: block;
+    height: 32px;
     box-sizing: border-box;
     outline: 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     cursor: pointer;
     position: relative;
@@ -90,17 +124,12 @@ export default {
     border: 1px solid #dddee1;
     transition: all .2s ease-in-out;
 }
-.ivu-select-single .ivu-select-selection {
-    height: 32px;
-    position: relative;
-}
-.ivu-select-dropdown {
-    width: 308px;
+.jf-select-dropdown {
+    width: 100%;
     transform-origin: center top 0px;
     will-change: top, left;
-    top: 33px;
+    top: 32px;
     left: 0px;
-    display: none;
     max-height: 200px;
     overflow: auto;
     margin: 5px 0;
@@ -112,7 +141,7 @@ export default {
     position: absolute;
     z-index: 900;
 }
-.ivu-select-single .ivu-select-selection .ivu-select-placeholder, .ivu-select-single .ivu-select-selection .ivu-select-selected-value {
+.jf-select-selected-value {
     display: block;
     height: 30px;
     line-height: 30px;
@@ -123,28 +152,27 @@ export default {
     padding-left: 8px;
     padding-right: 24px;
 }
-.ivu-select-arrow {
+.jf-select-arrow {
     position: absolute;
     top: 50%;
     right: 8px;
     line-height: 1;
-    margin-top: -7px;
-    font-size: 14px;
-    color: #80848f;
     transition: all .2s ease-in-out;
+    border: .45em solid transparent;
+    border-top-color: #80848f;
 }
-.ivu-article .ivu-select ul {
-    padding-left: 0!important;
-    list-style-type: none;
+.jf-select-arrow-up {
+  transform: rotate(180deg);
+  margin-top: -0.675em;
 }
-.ivu-select-dropdown-list {
+.jf-select-arrow-down {
+  margin-top: -0.225em;
+}
+.jf-select-dropdown-list {
     min-width: 100%;
     list-style: none;
 }
-.ivu-article .ivu-select li {
-    margin-bottom: 0;
-}
-.ivu-select-item {
+.jf-select-item {
     margin: 0;
     line-height: normal;
     padding: 7px 16px;
@@ -155,15 +183,13 @@ export default {
     list-style: none;
     cursor: pointer;
     transition: background .2s ease-in-out;
+    &:hover {
+      background: #f3f3f3;
+    }
 }
-.ivu-select-item-selected.ivu-select-item-focus {
-    background: rgba(40,123,211,.91);
-}
-.ivu-select-item-selected, .ivu-select-item-selected:hover {
+.jf-select-item-selected, .jf-select-item-selected:hover {
     color: #fff;
     background: rgba(45,140,240,.9);
 }
-.ivu-select-item-focus, .ivu-select-item:hover {
-    background: #f3f3f3;
-}
+
 </style>

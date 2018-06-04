@@ -125,6 +125,29 @@ export default {
                         }
                       }
                     },
+                    "job": {
+                      "type": "TheSelect",
+                      "title": "工作",
+                      "propertyOrder": 10,
+                      "options": [
+                        {
+                          "value": "internet",
+                          "label": "互联网"
+                        },
+                        {
+                          "value": "medicine",
+                          "label": "医学"
+                        },
+                        {
+                          "value": "estate",
+                          "label": "房地产"
+                        },
+                        {
+                          "value": "other",
+                          "label": "其他"
+                        }
+                      ]
+                    },
                     "education": {
                       "type": "TheAddInput",
                       "title": "教育信息",
@@ -185,6 +208,7 @@ export default {
                   "city": "北京市"
                 },
                 "education": [],
+                "job": "other",
                 "pets": [{
                   "type": 1,
                   "name": "Walter"

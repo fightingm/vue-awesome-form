@@ -1,6 +1,6 @@
 <template>
-  <div class="jf-form-item">
-    <label class="jf-form-item-label" v-if="!inTable">{{title}}</label>
+  <div :class="['jf-form-item', { 'jf-form-item-hasLabel': !noLabel } ]">
+    <label class="jf-form-item-label" v-if="!noLabel">{{title}}</label>
     <div class="jf-form-item-content">
       <div class="jf-radio-group">
         <label 
@@ -22,7 +22,7 @@
 
 export default {
   name: 'TheRadio',
-  props: ["options", 'title', 'objKey', 'objVal', 'inTable'],
+  props: ["options", 'title', 'objKey', 'objVal', 'noLabel'],
   computed: {
     msg: {
       get () {
@@ -48,7 +48,9 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+
+<style scoped lang="postcss">
+
 
 .jf-radio-group {
     display: inline-block;
@@ -84,9 +86,30 @@ export default {
     border: 1px solid #dddee1;
     border-radius: 50%;
     transition: all .2s ease-in-out;
+    &:after {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      left: 2px;
+      top: 2px;
+      border-radius: 6px;
+      display: table;
+      border-top: 0;
+      border-left: 0;
+      content: " ";
+      background-color: #2d8cf0;
+      opacity: 0;
+      transition: all .2s ease-in-out;
+      transform: scale(0);
+    }
 }
 .jf-radio-checked .jf-radio-inner {
     border-color: #2d8cf0;
+    &:after {
+      opacity: 1;
+      transform: scale(1);
+      transition: all .2s ease-in-out;
+    }
 }
 .jf-radio-input {
     position: absolute;
@@ -97,28 +120,5 @@ export default {
     z-index: 1;
     opacity: 0;
     cursor: pointer;
-}
-.jf-radio-inner:after {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    left: 2px;
-    top: 2px;
-    border-radius: 6px;
-    display: table;
-    border-top: 0;
-    border-left: 0;
-    content: " ";
-    background-color: #2d8cf0;
-    opacity: 0;
-    transition: all .2s ease-in-out;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-}
-.jf-radio-checked .jf-radio-inner:after {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    transition: all .2s ease-in-out;
 }
 </style>
