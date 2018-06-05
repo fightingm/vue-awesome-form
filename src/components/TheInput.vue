@@ -7,7 +7,7 @@
         {{msg}}
         <slot></slot>
       </div>
-      <div class="jf-form-item-error-tip" v-if="validateState === 'error'">{{validateMessage}}</div>
+      <div class="jf-form-item-error-tip" v-if="showValidate">{{validateInfo}}</div>
     </div>
   </div>
 </template>
@@ -19,31 +19,43 @@ import Emitter from '../emitter';
 export default {
   name: 'TheInput',
   mixins: [ Emitter ],
-  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules'],
+  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyIndex'],
   computed: {
     msg: {
       get: function() {
-        console.log('22222');
         return this.objVal;
-        // return this.keyName.reduce((pre, cur) => {
-        //         return pre[cur];
-        //       }, this.$store.state.formValue)
       },
       set: function(value) {
+        console.log('value', value);
         this.$store.commit('setFormData', {
           key: this.keyName,
           value
         });
       }
+    },
+    showValidate() {
+      if(this.validateObj !== undefined) {
+        return this.validateObj.validateState === 'error'
+      } else {
+        return this.validateState === 'error'
+      }
+    },
+    validateInfo() {
+      if(this.validateObj !== undefined) {
+        return this.validateObj.validateMessage
+      } else {
+        return this.validateMessage
+      }
     }
   },
   mounted() {
     this.dispatch('HelloWorld', 'on-form-item-add', this);
+    // this.dispatch('TheAddInput', 'on-input-add', this);
   },
   methods: {
     handleBlur(e) {
       const val = e.target.value;
-      // this.validate();
+      this.validate();
       // this.dispatch('HelloWorld', 'on-form-blur', val);
     },
     validate() {
@@ -51,11 +63,20 @@ export default {
       var descriptor = {
         name: this.rules
       };
-      console.log('msg', this.msg);
       var validator = new schema(descriptor);
       validator.validate({name: this.msg}, (err, fields) => {
-        this.validateState = !err ? 'success' : 'error';
-        this.validateMessage = err ? err[0].message : '';
+        let state = !err ? 'success' : 'error';
+        let msg = err ? err[0].message : '';
+        if(this.validateObj !== undefined) {
+          this.dispatch('TheAddInput', 'on-input-validate', {
+            index: this.keyIndex,
+            validateState: state,
+            validateMessage: msg
+          });
+        }else {
+          this.validateState = state;
+          this.validateMessage = msg;
+        }
       })
     }
   },

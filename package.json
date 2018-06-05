@@ -12,6 +12,7 @@
   "dependencies": {
     "async-validator": "^1.8.2",
     "postcss-preset-env": "^5.1.0",
+    "shortid": "^2.2.8",
     "vue": "^2.5.2",
     "vuex": "^3.0.1"
   },

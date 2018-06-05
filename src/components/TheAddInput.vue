@@ -8,6 +8,8 @@
         <the-input
           :objKey="getObjKey(index)" 
           :objVal="getObjVal(index)"
+          :validateObj="getValidateObj(index)"
+          :keyIndex="index"
           :rules="rules.childRule"
           :noLabel="true">
           <div style="margin-left: 8px">
@@ -15,7 +17,6 @@
           </div>
         </the-input>
       </div>
-      {{objVal}}
       <div class="jf-form-item-error-tip" v-if="validateState === 'error'">{{validateMessage}}</div>  
       <div style="text-align: right; margin-top: 10px; margin-bottom: 10px;">
         <Button @click="add" type="primary">添加</Button>
@@ -57,16 +58,36 @@ export default {
   props: ['title', 'objKey', 'objVal', 'noLabel', 'rules'],
   computed: {
     curVal() {
-      console.log('xxxx');
        return this.keyName.reduce((pre, cur) => {
                 return pre[cur];
               }, this.$store.state.formValue)
     }
   },
+  created() {
+    this.$on('on-input-validate', obj => {
+      this.validateArray.splice(obj.index, 1, obj);
+      return false;
+    })
+  },
   mounted() {
     this.dispatch('HelloWorld', 'on-form-item-add', this);
   },
   methods: {
+    // 使用index做key会带来一些列的问题，所以使用shortid为数组的每一项生成唯一的id
+    // 但是这样会导致每次输入都会产生新的key，和上次的key不一样，所以input会失去焦点
+    // 最终解决方案，在父组件保存子组件的校验状态，子组件校验的时候通知父组件，然后父组件把状态传给子组件
+    unique(obj) {
+      return obj.map(item => {
+        item._shortid = shortid.generate();
+        return item;
+      });
+    },
+    getValidateObj(index) {
+      return this.validateArray[index] || {
+        validateState: '',
+        validateMessage: ''
+      };
+    },
     getObjKey(index) {
       return this.keyName.concat([index]);
     },
@@ -81,6 +102,7 @@ export default {
       const newVal = this.curVal.filter((item, idx) => {
         return idx !== index;
       });
+      this.validateArray.splice(index, 1);
       this.setFormData(newVal);
     },
     handleInput(index, e) {
@@ -116,7 +138,8 @@ export default {
     return {
       keyName: this.objKey,
       validateState: '',
-      validateMessage: ''
+      validateMessage: '',
+      validateArray: []
     }
   }
 }

@@ -306,7 +306,7 @@ export default {
                   "city": "北京市"
                 },
                 "introduce": '',
-                "education": ['22'],
+                "education": [''],
                 "job": "other",
                 "pets": [{
                   "type": 1,
