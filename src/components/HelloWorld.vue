@@ -261,7 +261,12 @@ export default {
                       "columns": {
                         "name": {
                           "type": "TheInput",
-                          "title": "名字"
+                          "title": "名字",
+                          "rules": {
+                            "required": true,
+                            "message": "名字不能为空",
+                            "trigger": "blur"
+                          }
                         },
                         "type": {
                           "type": "TheSelect",
@@ -290,6 +295,12 @@ export default {
                       "addDefault": {
                         "type": 2,
                         "name": "Walter"
+                      },
+                      "rules": {
+                        "type": "array",
+                        "required": true,
+                        "message": "The 宠物信息 cannot be empty",
+                        "trigger": "blur"
                       }
                     }
                 }

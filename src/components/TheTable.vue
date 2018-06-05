@@ -34,6 +34,7 @@
           </table>
         </div> 
       </div>
+      <div class="jf-form-item-error-tip" v-if="validateState === 'error'">{{validateMessage}}</div>        
     </div>
     <div style="text-align: right; margin-top: 10px;">
       <Button @click="add" type="primary">添加一行</Button>
@@ -47,7 +48,9 @@ import TheTextArea from './TheTextArea';
 import TheSelect from './TheSelect';
 import TheRadio from './TheRadio';
 import TheCheckbox from './TheCheckbox';
-import Button from './button'
+import Button from './button';
+import schema from 'async-validator';
+import Emitter from '../emitter';
 
 export default {
   name: 'TheTable',
@@ -59,7 +62,8 @@ export default {
     TheCheckbox,
     Button
   },
-  props: ['title', 'objKey', 'objVal', "addDefault", "columns", "noLabel"],
+  mixins: [ Emitter ],
+  props: ['title', 'objKey', 'objVal', "addDefault", "columns", "noLabel", "rules"],
   computed: {
     curVal() {
        return this.keyName.reduce((pre, cur) => {
@@ -69,6 +73,9 @@ export default {
     orderColumns() {
       return this.orderProperty(this.columns);
     }
+  },
+  mounted() {
+    this.dispatch('HelloWorld', 'on-form-item-add', this);
   },
   methods: {
     getObjKey(index, key) {
@@ -119,12 +126,26 @@ export default {
         pre[cur.key] = cur.val;
         return pre;
       }, {});
+    },
+    validate() {
+      if(!this.rules) return;
+      // console.log(this.rules);
+      var descriptor = {
+        name: this.rules
+      };
+      var validator = new schema(descriptor);
+      validator.validate({name: this.objVal}, (err, fields) => {
+        this.validateState = !err ? 'success' : 'error';
+        this.validateMessage = err ? err[0].message : '';
+      })
     }
   },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      keyName: this.objKey
+      keyName: this.objKey,
+      validateState: '',
+      validateMessage: ''
     }
   }
 }
