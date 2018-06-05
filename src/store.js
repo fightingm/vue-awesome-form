@@ -6,8 +6,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-      formValue: {},
-      count: 111
+      formValue: {}
     },
     mutations: {
         initFormData(state, payload) {

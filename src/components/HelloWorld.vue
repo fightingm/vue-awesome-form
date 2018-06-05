@@ -15,6 +15,10 @@ import { store } from '../store'
 import TheTree from './TheTree';
 import Button from './button'
 
+import schema from 'async-validator';
+// 表单验证这里参考iview的做法，通过mixin的方式将事件emitter注入到每个组件
+// 通过事件的广播与派发，input组件blur之后向上dispatch事件，
+// 然后在根组件统一负责表单的验证
 export default {
   name: 'HelloWorld',
   store,
@@ -22,22 +26,36 @@ export default {
     TheTree,
     Button
   },
-  computed: {
-    schemaForm: function () {
-      const { schema } = this.formData;
-      for(let key in schema) {
-        const data = schema[key];
-      }
-    }
-  },
-  created: function() {
+  created() {
     store.commit('initFormData', {
       value: this.formData.value
+    });
+    this.$on('on-form-item-add', field => {
+      if(field) this.fields.push(field);
+      return false;
     })
   },
   methods: {
+    validate() {
+      // var descriptor = this.formData.ruleValidate;
+      // var validator = new schema(descriptor);
+      // var value = store.state.formValue;
+      // console.log('???', value);
+      // validator.validate(value, (err, fields) => {
+      //   if(err) {
+      //     console.log(err);
+      //     return;
+      //   }
+      //   console.log('success');
+      // })
+      this.fields.forEach(field => {
+        field.validate();
+      })
+    },
     handleSubmit: function() {
-      console.log(store.state.formValue);
+      this.validate();
+      // console.log(this.fields);
+      // console.log(store.state.formValue);
     },
      // 根据propertyOrder 从小到大排序
     orderProperty(oldObj) {
@@ -58,11 +76,39 @@ export default {
         pre[cur.key] = cur.val;
         return pre;
       }, {});
+    },
+    onFieldBlur() {
+      console.log(arguments);
     }
+  },
+  mounted() {
+    this.$on('on-form-blur', this.onFieldBlur);
   },
   data () {
     return {
+      "fields": [],
       "formData": {
+        "ruleValidate": {
+          "person": {
+            "name": {
+              "required": true,
+              "message": "The name cannot be empty",
+              "trigger": "blur"
+            },
+            "age": [
+              {
+                "required": true,
+                "message": "The age cannot be empty",
+                "trigger": "blur"
+              },
+              {
+                "type": "number",
+                "message": "年龄必须是数字",
+                "tigger": "blur"
+              }
+            ]
+          }
+        },
         "schema": {
           "person": {
                 "type": "TheTitle",
@@ -70,11 +116,23 @@ export default {
                 "properties": {
                     "name": {
                         "type": "TheInput",
-                        "title": "姓名"
+                        "title": "姓名",
+                        "rules": {
+                          "required": true,
+                          "message": "The name cannot be empty",
+                          "trigger": "blur"
+                        }
                     },
                     "age": {
                         "type": "TheInput",
-                        "title": "年龄"
+                        "title": "年龄",
+                        "rules": [
+                          {
+                            "required": true,
+                            "message": "The age cannot be empty",
+                            "trigger": "blur"
+                          }
+                        ]
                     },
                     "gender": {
                       "type": "TheRadio",
@@ -89,7 +147,13 @@ export default {
                           "value": 2,
                           "label": "女"
                         }
-                      ]
+                      ],
+                      "rules": {
+                        "type": "number",
+                        "required": true,
+                        "message": "The 性别 cannot be empty",
+                        "trigger": "blur"
+                      }
                     },
                     "interests": {
                       "type": "TheCheckbox",
@@ -108,7 +172,13 @@ export default {
                           "value": 3,
                           "label": "打豆豆"
                         }
-                      ]
+                      ],
+                      "rules": {
+                        "type": "array",
+                        "required": true,
+                        "message": "The 兴趣爱好 cannot be empty",
+                        "trigger": "blur"
+                      }
                     },
                     "location": {
                       "type": "TheTitle",
@@ -117,11 +187,21 @@ export default {
                       "properties": {
                         "province": {
                           "type": "TheInput",
-                          "title": "省份"
+                          "title": "省份",
+                          "rules": {
+                            "required": true,
+                            "message": "The 省份 cannot be empty",
+                            "trigger": "blur"
+                          }
                         },
                         "city": {
                           "type": "TheInput",
-                          "title": "市"
+                          "title": "市",
+                          "rules": {
+                            "required": true,
+                            "message": "The 市 cannot be empty",
+                            "trigger": "blur"
+                          }
                         }
                       }
                     },
@@ -151,11 +231,29 @@ export default {
                     "education": {
                       "type": "TheAddInput",
                       "title": "教育信息",
-                      "addText": "添加"
+                      "addText": "添加",
+                      "rules": {
+                        "myRule": {
+                            "type": "array",
+                            "required": true,
+                            "message": "The 教育信息 cannot be empty",
+                            "trigger": "blur"
+                          },
+                          "childRule": {
+                            "required": true,
+                            "message": "这一项不能为空",
+                            "trigger": "blur"
+                          }
+                      }
                     },
                     "introduce": {
                         "type": "TheTextArea",
-                        "title": "个人介绍"
+                        "title": "个人介绍",
+                        "rules": {
+                          "required": true,
+                          "message": "The 个人介绍 cannot be empty",
+                          "trigger": "blur"
+                        }
                     },
                     "pets": {
                       "type": "TheTable",
@@ -199,15 +297,16 @@ export default {
         },
         "value": {
             "person": {
-                "name": "Jeremy Dorn",
-                "age": 25,
-                "gender": 1,
-                "interests": [2],
+                "name": "",
+                "age": "25",
+                "gender": '',
+                "interests": [],
                 "location": {
                   "province": "北京省",
                   "city": "北京市"
                 },
-                "education": [],
+                "introduce": '',
+                "education": ['22'],
                 "job": "other",
                 "pets": [{
                   "type": 1,

@@ -8,15 +8,18 @@
         <the-input
           :objKey="getObjKey(index)" 
           :objVal="getObjVal(index)"
+          :rules="rules.childRule"
           :noLabel="true">
           <div style="margin-left: 8px">
             <Button @click="del(index)" type="warning">删除</Button>
           </div>
         </the-input>
       </div>
-    </div>
-    <div style="text-align: right; margin-top: 10px; margin-bottom: 10px;">
-      <Button @click="add" type="primary">添加</Button>
+      {{objVal}}
+      <div class="jf-form-item-error-tip" v-if="validateState === 'error'">{{validateMessage}}</div>  
+      <div style="text-align: right; margin-top: 10px; margin-bottom: 10px;">
+        <Button @click="add" type="primary">添加</Button>
+      </div>  
     </div>
   </div>
 </template>
@@ -36,8 +39,13 @@
 // 按理说应该只会渲染插入的那一项，其他的应该不变，
 // 但是插入了一项之后，原来的index就发生了变化
 // 每一条数据都要重新渲染
+
+// 由于vue中无法检测到对象属性的添加或者删除，以及数组索引的更改，
+// 所以这里会遇到问题，子组件input的v-model无法被检测
 import TheInput from './TheInput';
-import Button from './button'
+import Button from './button';
+import schema from 'async-validator';
+import Emitter from '../emitter';
 
 export default {
   name: 'TheAddInput',
@@ -45,13 +53,18 @@ export default {
     TheInput,
     Button
   },
-  props: ['title', 'objKey', 'objVal', 'noLabel'],
+  mixins: [ Emitter ],
+  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules'],
   computed: {
     curVal() {
+      console.log('xxxx');
        return this.keyName.reduce((pre, cur) => {
                 return pre[cur];
               }, this.$store.state.formValue)
     }
+  },
+  mounted() {
+    this.dispatch('HelloWorld', 'on-form-item-add', this);
   },
   methods: {
     getObjKey(index) {
@@ -85,11 +98,25 @@ export default {
         key: this.keyName,
         value
       });
+    },
+    validate() {
+      if(!this.rules) return;
+      // console.log(this.rules);
+      var descriptor = {
+        name: this.rules.myRule
+      };
+      var validator = new schema(descriptor);
+      validator.validate({name: this.objVal}, (err, fields) => {
+        this.validateState = !err ? 'success' : 'error';
+        this.validateMessage = err ? err[0].message : '';
+      })
     }
   },
   data () {
     return {
-      keyName: this.objKey
+      keyName: this.objKey,
+      validateState: '',
+      validateMessage: ''
     }
   }
 }

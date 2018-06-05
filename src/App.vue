@@ -141,5 +141,13 @@ article, aside, blockquote, body, button, dd, details, div, dl, dt, fieldset, fi
         border-color: #57a3f3;
     }
 }
+.jf-form-item-error-tip {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      line-height: 1;
+      padding-top: 6px;
+      color: #ed3f14;
+}
 
 </style>

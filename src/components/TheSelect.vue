@@ -33,12 +33,6 @@
         </transition>
       </div>
     </div>
-    <!-- <select v-model="msg">
-      <option 
-        v-for="(item, index) in options"
-        :key="index"
-        :value="item.value">{{item.label}}</option>
-    </select> -->
   </div>
 </template>
 

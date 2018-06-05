@@ -14,15 +14,19 @@
           <span>{{item.label}}</span>
         </label>
       </div>
+      <div class="jf-form-item-error-tip" v-if="validateState === 'error'">{{validateMessage}}</div>
     </div>
   </div>
 </template>
 
 <script>
+import schema from 'async-validator';
+import Emitter from '../emitter';
 
 export default {
   name: 'TheCheckbox',
-  props: ["options", 'title', 'objKey', 'objVal', 'noLabel'],
+  mixins: [ Emitter ],
+  props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules'],
   computed: {
     msg: {
       get () {
@@ -39,9 +43,27 @@ export default {
       }
     }
   },
+  mounted() {
+    this.dispatch('HelloWorld', 'on-form-item-add', this);
+  },
+  methods: {
+    validate() {
+      if(!this.rules) return;
+      var descriptor = {
+        name: this.rules
+      };
+      var validator = new schema(descriptor);
+      validator.validate({name: this.msg}, (err, fields) => {
+        this.validateState = !err ? 'success' : 'error';
+        this.validateMessage = err ? err[0].message : '';
+      })
+    }
+  },
   data () {
     return {
-      keyName: this.objKey
+      keyName: this.objKey,
+      validateState: '',
+      validateMessage: ''
     }
   }
 }

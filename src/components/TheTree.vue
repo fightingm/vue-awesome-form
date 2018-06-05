@@ -1,6 +1,7 @@
 <template>
   <div>
-    <component :is="model.type" :objKey="objKey" :objVal="objVal" v-bind="model"></component>
+    <component :is="model.type" :objKey="objKey" :objVal="objVal" v-bind="model">
+    </component>
     <div v-if="model.properties">
       <the-tree
         v-for="(val, key, index) in orderProperty(model.properties)"
@@ -81,4 +82,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .jf-form-item-error-tip {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      line-height: 1;
+      padding-top: 6px;
+      color: #ed3f14;
+  }
 </style>
