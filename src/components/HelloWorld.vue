@@ -4,9 +4,12 @@
       v-for="(val, key, index) in orderProperty(formData.schema)"
       :key="index"
       :objKey="key"
-      :objVal="formData.value[key]"
+      :objVal="objVal[key]"
       :model="val"></the-tree>
-    <Button @click="handleSubmit" type="primary">提交</Button>
+    <div style="text-align: center; margin-top: 10px;">
+      <Button @click="handleReset" type="warning">重置</Button>
+      <Button @click="handleSubmit" type="primary">提交</Button>
+    </div>
   </form>
 </template>
 
@@ -14,7 +17,6 @@
 import { store } from '../store'
 import TheTree from './TheTree';
 import Button from './button'
-
 import schema from 'async-validator';
 // 表单验证这里参考iview的做法，通过mixin的方式将事件emitter注入到每个组件
 // 通过事件的广播与派发，input组件blur之后向上dispatch事件，
@@ -26,6 +28,11 @@ export default {
     TheTree,
     Button
   },
+  computed: {
+    objVal() {
+      return store.state.formValue;
+    }
+  },
   created() {
     store.commit('initFormData', {
       value: this.formData.value
@@ -33,29 +40,30 @@ export default {
     this.$on('on-form-item-add', field => {
       if(field) this.fields.push(field);
       return false;
-    })
+    });
   },
   methods: {
     validate() {
-      // var descriptor = this.formData.ruleValidate;
-      // var validator = new schema(descriptor);
-      // var value = store.state.formValue;
-      // console.log('???', value);
-      // validator.validate(value, (err, fields) => {
-      //   if(err) {
-      //     console.log(err);
-      //     return;
-      //   }
-      //   console.log('success');
-      // })
       this.fields.forEach(field => {
         field.validate();
       })
     },
-    handleSubmit: function() {
+    handleSubmit() {
       this.validate();
       // console.log(this.fields);
       // console.log(store.state.formValue);
+    },
+    // 三种思路，第一种方式在每个组件保存初始值，reset的时候循环调用每一个reset事件
+    // 第二种思路，根组件保存一个深拷贝的初始值，然后统一reset
+    // 第二种思路只能恢复初始值，没法处理组件内的状态，比如校验信息
+    // 第三种思路结合两种思路，在根组件reset数据，在每个组件内部处理自己的状态
+    handleReset() {
+      store.commit('initFormData', {
+        value: this.formData.initValue
+      });
+      this.fields.forEach(field => {
+        field.resetField && field.resetField();
+      });
     },
      // 根据propertyOrder 从小到大排序
     orderProperty(oldObj) {
@@ -88,27 +96,6 @@ export default {
     return {
       "fields": [],
       "formData": {
-        "ruleValidate": {
-          "person": {
-            "name": {
-              "required": true,
-              "message": "The name cannot be empty",
-              "trigger": "blur"
-            },
-            "age": [
-              {
-                "required": true,
-                "message": "The age cannot be empty",
-                "trigger": "blur"
-              },
-              {
-                "type": "number",
-                "message": "年龄必须是数字",
-                "tigger": "blur"
-              }
-            ]
-          }
-        },
         "schema": {
           "person": {
                 "type": "TheTitle",
@@ -301,11 +288,59 @@ export default {
                             "message": "类型不能为空",
                             "trigger": "blur"
                           }
+                        },
+                        "gender": {
+                          "type": "TheRadio",
+                          "title": "性别",
+                          "propertyOrder": 1,
+                          "options": [
+                            {
+                              "value": 1,
+                              "label": "男"
+                            },
+                            {
+                              "value": 2,
+                              "label": "女"
+                            }
+                          ],
+                          "rules": {
+                            "type": "number",
+                            "required": true,
+                            "message": "The 性别 cannot be empty",
+                            "trigger": "blur"
+                          }
+                        },
+                        "interests": {
+                          "type": "TheCheckbox",
+                          "title": "兴趣爱好",
+                          "propertyOrder": 2,
+                          "options": [
+                            {
+                              "value": 1,
+                              "label": "吃饭"
+                            },
+                            {
+                              "value": 2,
+                              "label": "睡觉"
+                            },
+                            {
+                              "value": 3,
+                              "label": "打豆豆"
+                            }
+                          ],
+                          "rules": {
+                            "type": "array",
+                            "required": true,
+                            "message": "The 兴趣爱好 cannot be empty",
+                            "trigger": "blur"
+                          }
                         }
                       },
                       "addDefault": {
                         "type": "",
-                        "name": ""
+                        "name": "",
+                        "gender": "",
+                        "interests": []
                       },
                       "rules": {
                         "type": "array",
@@ -331,8 +366,31 @@ export default {
                 "education": [''],
                 "job": "",
                 "pets": [{
-                  "type": 1,
-                  "name": "Walter"
+                  "type": "",
+                  "name": "Walter",
+                  "gender": 1,
+                  "interests": [1, 2]
+                }]
+            }
+        },
+        "initValue": {
+            "person": {
+                "name": "",
+                "age": "25",
+                "gender": '',
+                "interests": [],
+                "location": {
+                  "province": "北京省",
+                  "city": "北京市"
+                },
+                "introduce": '',
+                "education": [''],
+                "job": "",
+                "pets": [{
+                  "type": "",
+                  "name": "Walter",
+                  "gender": 1,
+                  "interests": [1, 2]
                 }]
             }
         }

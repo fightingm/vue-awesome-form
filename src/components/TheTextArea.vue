@@ -1,31 +1,30 @@
 <template>
-  <div :class="['jf-form-item', { 'jf-form-item-hasLabel': !noLabel } ]">
+  <div :class="['jf-form-item', noLabel ? 'jf-form-item-noLabel' : 'jf-form-item-hasLabel' ]">
     <label class="jf-form-item-label" v-if="!noLabel">{{title}}</label>
     <div class="jf-form-item-content">
       <div class="jf-input-wrapper jf-input-type">
-        <textarea v-model="msg" wrap="soft" autocomplete="off" spellcheck="false" rows="2" class="jf-input"></textarea>
+        <textarea v-model="msg" wrap="soft" autocomplete="off" spellcheck="false" rows="2" class="jf-input" @blur="handleBlur"></textarea>
       </div>
-      <div class="jf-form-item-error-tip" v-if="validateState === 'error'">{{validateMessage}}</div>      
+      <div class="jf-form-item-error-tip" v-if="showValidate">{{validateInfo}}</div>    
     </div>
   </div>
 </template>
 
 <script>
-import schema from 'async-validator';
+
 import Emitter from '../emitter';
+import Validate from '../validate';
 
 export default {
-  name: 'TheTextArea',
-  mixins: [ Emitter ],
-  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules'],
+  name: 'TheTextarea',
+  mixins: [ Emitter, Validate ],
+  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
   computed: {
     msg: {
-      get () {
-        return this.keyName.reduce((pre, cur) => {
-                return pre[cur];
-              }, this.$store.state.formValue)
+      get: function() {
+        return this.objVal;
       },
-      set (value) {
+      set: function(value) {
         this.$store.commit('setFormData', {
           key: this.keyName,
           value
@@ -40,18 +39,6 @@ export default {
     handleBlur(e) {
       const val = e.target.value;
       this.validate();
-      // this.dispatch('HelloWorld', 'on-form-blur', val);
-    },
-    validate() {
-      if(!this.rules) return;
-      var descriptor = {
-        name: this.rules
-      };
-      var validator = new schema(descriptor);
-      validator.validate({name: this.msg}, (err, fields) => {
-        this.validateState = !err ? 'success' : 'error';
-        this.validateMessage = err ? err[0].message : '';
-      })
     }
   },
   data () {

@@ -84,7 +84,6 @@ export default {
           if(typeof(cur) === 'number') {
               return pre.splice(cur, 1, value);
           } else {
-            console.log('???', pre, cur, obj.validateObj);
               return pre[cur] = obj.validateObj;
           }
         }
@@ -163,7 +162,6 @@ export default {
     },
     validate() {
       if(!this.rules) return;
-      // console.log(this.rules);
       var descriptor = {
         name: this.rules
       };

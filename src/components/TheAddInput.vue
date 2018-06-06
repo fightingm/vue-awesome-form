@@ -99,6 +99,7 @@ export default {
       const newVal = this.curVal.concat([""]);
       this.setFormData(newVal);
     },
+    // 删除的时候应该做点什么，这里可能有坑
     del(index) {
       const newVal = this.curVal.filter((item, idx) => {
         return idx !== index;

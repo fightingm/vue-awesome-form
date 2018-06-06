@@ -39,12 +39,13 @@
 </template>
 
 <script>
-import schema from 'async-validator';
+
 import Emitter from '../emitter';
+import Validate from '../validate';
 
 export default {
   name: 'TheSelect',
-  mixins: [ Emitter ],
+  mixins: [ Emitter, Validate ],
   props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
   computed: {
     msg: {
@@ -65,25 +66,10 @@ export default {
         return this.options.filter(item => {
           return item.value === this.objVal;
         })[0];
-    },
-    showValidate() {
-      if(this.validateObj !== undefined) {
-        return this.validateObj.validateState === 'error'
-      } else {
-        return this.validateState === 'error'
-      }
-    },
-    validateInfo() {
-      if(this.validateObj !== undefined) {
-        return this.validateObj.validateMessage
-      } else {
-        return this.validateMessage
-      }
     }
   },
   mounted() {
     this.dispatch('HelloWorld', 'on-form-item-add', this);
-    // this.dispatch('TheAddInput', 'on-input-add', this);
   },
   methods: {
     toggle() {
@@ -99,35 +85,7 @@ export default {
       this.toggle();
       // 如果立即执行validate,validate函数中拿到的objVal是当前的objVal，
       // 所以需要在下次 DOM 更新循环结束之后执行验证函数
-      this.$nextTick(() => {
-        this.validate();
-      });
-      
-    },
-    validate() {
-      if(!this.rules) return;
-      var descriptor = {
-        name: this.rules
-      };
-      var validator = new schema(descriptor);
-      console.log('val', this.objVal, 'rule', descriptor);
-      validator.validate({name: this.objVal}, (err, fields) => {
-        let state = !err ? 'success' : 'error';
-        let msg = err ? err[0].message : '';
-        if(this.validateObj !== undefined) {
-          this.dispatch(this.parentName, 'on-input-validate', {
-            // index: this.keyIndex,
-            keyArr: this.keyArr,
-            validateObj: {
-              validateState: state,
-              validateMessage: msg
-            }
-          });
-        }else {
-          this.validateState = state;
-          this.validateMessage = msg;
-        }
-      })
+      this.asyncValidate();
     }
   },
   data () {

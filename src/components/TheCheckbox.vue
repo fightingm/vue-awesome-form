@@ -6,7 +6,8 @@
         <label
           v-for="(item, index) in options"
           :key="index"
-          :class="['jf-checkbox-wrapper', 'jf-checkbox-group-item', { 'jf-checkbox-wrapper-checked': msg.indexOf(item.value) !== -1 }]">
+          :class="['jf-checkbox-wrapper', 'jf-checkbox-group-item', { 'jf-checkbox-wrapper-checked': msg.indexOf(item.value) !== -1 }]"
+          @change="handleChange">
           <span :class="['jf-checkbox', { 'jf-checkbox-checked': msg.indexOf(item.value) !== -1 }]">
             <span class="jf-checkbox-inner"></span>
             <input type="checkbox" class="jf-checkbox-input" :value="item.value" v-model="msg">
@@ -14,26 +15,24 @@
           <span>{{item.label}}</span>
         </label>
       </div>
-      <div class="jf-form-item-error-tip" v-if="validateState === 'error'">{{validateMessage}}</div>
+      <div class="jf-form-item-error-tip" v-if="showValidate">{{validateInfo}}</div>
     </div>
   </div>
 </template>
 
 <script>
-import schema from 'async-validator';
+
 import Emitter from '../emitter';
+import Validate from '../validate';
 
 export default {
   name: 'TheCheckbox',
-  mixins: [ Emitter ],
-  props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules'],
+  mixins: [ Emitter, Validate ],
+  props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
   computed: {
     msg: {
       get () {
         return this.objVal;
-        // return this.keyName.reduce((pre, cur) => {
-        //         return pre[cur];
-        //       }, this.$store.state.formValue)
       },
       set (value) {
         this.$store.commit('setFormData', {
@@ -47,16 +46,8 @@ export default {
     this.dispatch('HelloWorld', 'on-form-item-add', this);
   },
   methods: {
-    validate() {
-      if(!this.rules) return;
-      var descriptor = {
-        name: this.rules
-      };
-      var validator = new schema(descriptor);
-      validator.validate({name: this.msg}, (err, fields) => {
-        this.validateState = !err ? 'success' : 'error';
-        this.validateMessage = err ? err[0].message : '';
-      })
+    handleChange() {
+      this.asyncValidate();
     }
   },
   data () {
