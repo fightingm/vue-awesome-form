@@ -166,15 +166,29 @@ export default {
       }, {});
     },
     validate() {
-      if(!this.rules) return;
-      var descriptor = {
-        name: this.rules
-      };
-      var validator = new schema(descriptor);
-      validator.validate({name: this.objVal}, (err, fields) => {
-        this.validateState = !err ? 'success' : 'error';
-        this.validateMessage = err ? err[0].message : '';
+      return new Promise((resolve, reject) => {
+        if(!this.rules) reject('norule');
+        var descriptor = {
+          name: this.rules
+        };
+        var validator = new schema(descriptor);
+        validator.validate({name: this.objVal}, (err, fields) => {
+          this.validateState = !err ? 'success' : 'error';
+          this.validateMessage = err ? err[0].message : '';
+          if(err) {
+            resolve({
+              title: this.title,
+              status: false
+            })
+          }else {
+            resolve({
+              title: this.title,
+              status: true
+            })
+          }
+        })
       })
+      
     }
   },
   data () {

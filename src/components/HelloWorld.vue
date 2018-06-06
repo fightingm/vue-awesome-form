@@ -36,9 +36,13 @@ export default {
     // store.commit('initFormData', {
     //   value: this.formData.value
     // });
-    this.initFormData(this.formData);
+    this.initFormData(this.formData.value);
     this.$on('on-form-item-add', field => {
       if(field) this.fields.push(field);
+      return false;
+    });
+    this.$on('on-form-item-remove', (field) => {
+      if (field) this.fields.splice(this.fields.indexOf(field), 1);
       return false;
     });
     this.$on('on-set-form-data', payload => {
@@ -46,8 +50,37 @@ export default {
     });
   },
   methods: {
-    initFormData(payload) {
-        this.formValue = payload.value;
+    initFormData(value) {
+        this.formValue = this.cloneDeep(value);
+    },
+    cloneDeep(source) {
+      // 只适用于对象中没有函数
+      return JSON.parse(JSON.stringify(source));
+      // var type = Object.prototype.toString.call(source);
+      // let obj;
+      // if(type === '[object Array]'){
+      //     obj = [];
+      // } else if(type === '[object Object]'){
+      //     obj = {};
+      // } else {
+      //     //不再具有下一层次
+      //     return source;
+      // }
+      // if(type === '[object Array]'){
+      //     for(let i = 0, len = source.length; i < len; i++){
+      //         obj.push(this.cloneDeep(source[i]));
+      //     }
+      // } else if(type === '[object Object]'){
+      //     for(let key in source){
+      //         obj[key] = this.cloneDeep(source[key]);
+      //     }
+      // }
+      // return obj;
+      // var result={};
+      // for (var key in source) {
+      //     result[key] = typeof(source[key]) ==='object' ? this.cloneDeep(source[key]) : source[key];
+      // } 
+      // return result; 
     },
     setFormData(payload) {
         const { key, value } = payload;
@@ -64,21 +97,40 @@ export default {
             return pre[cur] = pre[cur] || {}
         }, this.formValue);
     },
-    validate() {
-      this.fields.forEach(field => {
-        field.validate();
+    validate(cb) {
+      let noerr = true;
+      let len = this.fields.length;
+      this.fields.forEach((field, index) => {
+        field.validate().then(res => {
+          const { title, status } = res;
+          if(!status) {
+            noerr = false;
+            console.log(title);
+          }
+          if((index + 1) === len) {
+            cb(noerr);
+          }
+        }).catch(err => {
+          console.log(err);
+        })
       })
     },
     handleSubmit() {
-      this.validate();
+      this.validate(valid => {
+        if(valid) {
+          console.log('验证成功', this.formValue);
+        }else {
+          console.log('验证失败');
+        }
+      });
       // console.log(this.fields);
-      console.log(this.objVal);
     },
     // 三种思路，第一种方式在每个组件保存初始值，reset的时候循环调用每一个reset事件
     // 第二种思路，根组件保存一个深拷贝的初始值，然后统一reset
     // 第二种思路只能恢复初始值，没法处理组件内的状态，比如校验信息
     // 第三种思路结合两种思路，在根组件reset数据，在每个组件内部处理自己的状态
     handleReset() {
+      this.initFormData(this.formData.value);
       // store.commit('initFormData', {
       //   value: this.formData.initValue
       // });
@@ -115,6 +167,7 @@ export default {
   },
   data () {
     return {
+      "initFormValue": {},
       "formValue": {},
       "fields": [],
       "formData": {
@@ -375,27 +428,6 @@ export default {
             }
         },
         "value": {
-            "person": {
-                "name": "",
-                "age": "25",
-                "gender": '',
-                "interests": [],
-                "location": {
-                  "province": "北京省",
-                  "city": "北京市"
-                },
-                "introduce": '',
-                "education": [''],
-                "job": "",
-                "pets": [{
-                  "type": "",
-                  "name": "Walter",
-                  "gender": 1,
-                  "interests": [1, 2]
-                }]
-            }
-        },
-        "initValue": {
             "person": {
                 "name": "",
                 "age": "25",

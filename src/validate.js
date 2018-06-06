@@ -1,5 +1,8 @@
 import schema from 'async-validator';
 export default {
+    beforeDestroy () {
+        this.dispatch('HelloWorld', 'on-form-item-remove', this);
+    },
     computed: {
         showValidate() {
             if(this.validateObj !== undefined) {
@@ -40,27 +43,61 @@ export default {
             });
         },
         validate() {
-            if(!this.rules) return;
-            var descriptor = {
-              name: this.rules
-            };
-            var validator = new schema(descriptor);
-            validator.validate({name: this.msg}, (err, fields) => {
-              let state = !err ? 'success' : 'error';
-              let msg = err ? err[0].message : '';
-              if(this.validateObj !== undefined) {
-                this.dispatch(this.parentName, 'on-input-validate', {
-                  keyArr: this.keyArr,
-                  validateObj: {
-                    validateState: state,
-                    validateMessage: msg
-                  }
-                });
-              }else {
-                this.validateState = state;
-                this.validateMessage = msg;
-              }
+            return new Promise((resolve, reject) => {
+                if(!this.rules) reject('norule');
+                let descriptor = {
+                    name: this.rules
+                };
+                let validator = new schema(descriptor);
+                validator.validate({name: this.msg}, (err, fields) => {
+                    let state = !err ? 'success' : 'error';
+                    let msg = err ? err[0].message : '';
+                    if(this.validateObj !== undefined) {
+                        this.dispatch(this.parentName, 'on-input-validate', {
+                        keyArr: this.keyArr,
+                        validateObj: {
+                            validateState: state,
+                            validateMessage: msg
+                        }
+                        });
+                    }else {
+                        this.validateState = state;
+                        this.validateMessage = msg;
+                    }
+                    if(err) {
+                        resolve({
+                            title: this.title,
+                            status: false
+                        });
+                    }else {
+                        resolve({
+                            title: this.title,
+                            status: true
+                        });
+                    }
+                })
             })
+            // if(!this.rules) return;
+            // var descriptor = {
+            //   name: this.rules
+            // };
+            // var validator = new schema(descriptor);
+            // validator.validate({name: this.msg}, (err, fields) => {
+            //   let state = !err ? 'success' : 'error';
+            //   let msg = err ? err[0].message : '';
+            //   if(this.validateObj !== undefined) {
+            //     this.dispatch(this.parentName, 'on-input-validate', {
+            //       keyArr: this.keyArr,
+            //       validateObj: {
+            //         validateState: state,
+            //         validateMessage: msg
+            //       }
+            //     });
+            //   }else {
+            //     this.validateState = state;
+            //     this.validateMessage = msg;
+            //   }
+            // })
         }
     }
 }
