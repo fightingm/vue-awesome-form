@@ -23,6 +23,9 @@
                     :is="val.type" 
                     :objKey="getObjKey(index, key)" 
                     :objVal="getObjVal(index, key)"
+                    :validateObj="getValidateObj(index, key)"
+                    :keyArr="[index, key]"
+                    parentName="TheTable"
                     :noLabel="true" 
                     v-bind="val"></component>
                 </div>
@@ -74,10 +77,40 @@ export default {
       return this.orderProperty(this.columns);
     }
   },
+  created() {
+    this.$on('on-input-validate', obj => {
+      obj.keyArr.reduce((pre, cur, curIndex, arr) => {
+        if(curIndex === arr.length - 1) {
+          if(typeof(cur) === 'number') {
+              return pre.splice(cur, 1, value);
+          } else {
+            console.log('???', pre, cur, obj.validateObj);
+              return pre[cur] = obj.validateObj;
+          }
+        }
+        return pre[cur] = pre[cur] || {}
+      }, this.validateArray);
+      // this.validateArray[obj.index][obj.key] = obj.validateObj;
+      // this.validateArray.splice(obj.index, 1, obj);
+      return false;
+    })
+  },
   mounted() {
     this.dispatch('HelloWorld', 'on-form-item-add', this);
   },
   methods: {
+    getValidateObj(index, key) {
+      if(!this.validateArray[index]) {
+        this.$set(this.validateArray, index, {});
+      }
+      if(!this.validateArray[index][key]) {
+        this.$set(this.validateArray[index], key, {
+          validateState: '',
+          validateMessage: ''
+        })
+      }
+      return this.validateArray[index][key];
+    },
     getObjKey(index, key) {
       return this.keyName.concat([index, key]);
     },
@@ -99,6 +132,7 @@ export default {
       const newVal = this.curVal.filter((item, idx) => {
         return idx !== index;
       });
+      this.validateArray.splice(index, 1);
       this.setFormData(newVal);
     },
     setFormData(value) {
@@ -145,7 +179,8 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       keyName: this.objKey,
       validateState: '',
-      validateMessage: ''
+      validateMessage: '',
+      validateArray: []
     }
   }
 }

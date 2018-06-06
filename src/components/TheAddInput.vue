@@ -9,7 +9,8 @@
           :objKey="getObjKey(index)" 
           :objVal="getObjVal(index)"
           :validateObj="getValidateObj(index)"
-          :keyIndex="index"
+          :keyArr="[index]"
+          parentName="TheAddInput"
           :rules="rules.childRule"
           :noLabel="true">
           <div style="margin-left: 8px">
@@ -65,7 +66,7 @@ export default {
   },
   created() {
     this.$on('on-input-validate', obj => {
-      this.validateArray.splice(obj.index, 1, obj);
+      this.validateArray.splice(obj.keyArr[0], 1, obj.validateObj);
       return false;
     })
   },

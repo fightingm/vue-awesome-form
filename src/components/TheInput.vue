@@ -19,7 +19,7 @@ import Emitter from '../emitter';
 export default {
   name: 'TheInput',
   mixins: [ Emitter ],
-  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyIndex'],
+  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
   computed: {
     msg: {
       get: function() {
@@ -68,10 +68,13 @@ export default {
         let state = !err ? 'success' : 'error';
         let msg = err ? err[0].message : '';
         if(this.validateObj !== undefined) {
-          this.dispatch('TheAddInput', 'on-input-validate', {
-            index: this.keyIndex,
-            validateState: state,
-            validateMessage: msg
+          this.dispatch(this.parentName, 'on-input-validate', {
+            // index: this.keyIndex,
+            keyArr: this.keyArr,
+            validateObj: {
+              validateState: state,
+              validateMessage: msg
+            }
           });
         }else {
           this.validateState = state;
