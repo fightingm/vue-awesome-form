@@ -35,10 +35,14 @@ export default {
         return this.objVal;
       },
       set (value) {
-        this.$store.commit('setFormData', {
+        this.dispatch('HelloWorld', 'on-set-form-data', {
           key: this.keyName,
           value
         });
+        // this.$store.commit('setFormData', {
+        //   key: this.keyName,
+        //   value
+        // });
       }
     }
   },

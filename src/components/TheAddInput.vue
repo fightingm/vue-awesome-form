@@ -59,9 +59,10 @@ export default {
   props: ['title', 'objKey', 'objVal', 'noLabel', 'rules'],
   computed: {
     curVal() {
-       return this.keyName.reduce((pre, cur) => {
-                return pre[cur];
-              }, this.$store.state.formValue)
+      return this.objVal;
+      //  return this.keyName.reduce((pre, cur) => {
+      //           return pre[cur];
+      //         }, this.$store.state.formValue)
     }
   },
   created() {
@@ -118,10 +119,14 @@ export default {
       this.setFormData(newVal);
     },
     setFormData(value) {
-      this.$store.commit('setFormData', {
+      this.dispatch('HelloWorld', 'on-set-form-data', {
         key: this.keyName,
         value
       });
+      // this.$store.commit('setFormData', {
+      //   key: this.keyName,
+      //   value
+      // });
     },
     validate() {
       if(!this.rules) return;

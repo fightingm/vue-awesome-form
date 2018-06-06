@@ -69,9 +69,10 @@ export default {
   props: ['title', 'objKey', 'objVal', "addDefault", "columns", "noLabel", "rules"],
   computed: {
     curVal() {
-       return this.keyName.reduce((pre, cur) => {
-                return pre[cur];
-              }, this.$store.state.formValue)
+      return this.objVal;
+      //  return this.keyName.reduce((pre, cur) => {
+      //           return pre[cur];
+      //         }, this.$store.state.formValue)
     },
     orderColumns() {
       return this.orderProperty(this.columns);
@@ -135,10 +136,14 @@ export default {
       this.setFormData(newVal);
     },
     setFormData(value) {
-      this.$store.commit('setFormData', {
+      this.dispatch('HelloWorld', 'on-set-form-data', {
         key: this.keyName,
         value
       });
+      // this.$store.commit('setFormData', {
+      //   key: this.keyName,
+      //   value
+      // });
     },
     // 根据propertyOrder 从小到大排序
     orderProperty(oldObj) {

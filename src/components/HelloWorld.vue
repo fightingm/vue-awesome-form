@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { store } from '../store'
 import TheTree from './TheTree';
 import Button from './button'
 import schema from 'async-validator';
@@ -23,26 +22,48 @@ import schema from 'async-validator';
 // 然后在根组件统一负责表单的验证
 export default {
   name: 'HelloWorld',
-  store,
   components: {
     TheTree,
     Button
   },
   computed: {
     objVal() {
-      return store.state.formValue;
+      // return store.state.formValue;
+      return this.formValue;
     }
   },
   created() {
-    store.commit('initFormData', {
-      value: this.formData.value
-    });
+    // store.commit('initFormData', {
+    //   value: this.formData.value
+    // });
+    this.initFormData(this.formData);
     this.$on('on-form-item-add', field => {
       if(field) this.fields.push(field);
       return false;
     });
+    this.$on('on-set-form-data', payload => {
+      this.setFormData(payload);
+    });
   },
   methods: {
+    initFormData(payload) {
+        this.formValue = payload.value;
+    },
+    setFormData(payload) {
+        const { key, value } = payload;
+        key.reduce((pre, cur, curIndex, arr) => {
+            // 如果是最后一项，就是我们要改变的字段
+            if(curIndex === arr.length - 1) {
+                // Vue 不能检测直接用索引设置数组某一项的值
+                if(typeof(cur) === 'number') {
+                    return pre.splice(cur, 1, value);
+                } else {
+                    return pre[cur] = value;
+                }
+            }
+            return pre[cur] = pre[cur] || {}
+        }, this.formValue);
+    },
     validate() {
       this.fields.forEach(field => {
         field.validate();
@@ -51,16 +72,16 @@ export default {
     handleSubmit() {
       this.validate();
       // console.log(this.fields);
-      // console.log(store.state.formValue);
+      console.log(this.objVal);
     },
     // 三种思路，第一种方式在每个组件保存初始值，reset的时候循环调用每一个reset事件
     // 第二种思路，根组件保存一个深拷贝的初始值，然后统一reset
     // 第二种思路只能恢复初始值，没法处理组件内的状态，比如校验信息
     // 第三种思路结合两种思路，在根组件reset数据，在每个组件内部处理自己的状态
     handleReset() {
-      store.commit('initFormData', {
-        value: this.formData.initValue
-      });
+      // store.commit('initFormData', {
+      //   value: this.formData.initValue
+      // });
       this.fields.forEach(field => {
         field.resetField && field.resetField();
       });
@@ -94,6 +115,7 @@ export default {
   },
   data () {
     return {
+      "formValue": {},
       "fields": [],
       "formData": {
         "schema": {

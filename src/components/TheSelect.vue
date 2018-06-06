@@ -56,10 +56,14 @@ export default {
         //       }, this.$store.state.formValue)
       },
       set (value) {
-        this.$store.commit('setFormData', {
+        this.dispatch('HelloWorld', 'on-set-form-data', {
           key: this.keyName,
           value
         });
+        // this.$store.commit('setFormData', {
+        //   key: this.keyName,
+        //   value
+        // });
       }
     },
     selectVal () {
@@ -77,10 +81,14 @@ export default {
     },
     select(value) {
       if(this.msg !== value) {
-        this.$store.commit('setFormData', {
+        this.dispatch('HelloWorld', 'on-set-form-data', {
           key: this.keyName,
           value
         });
+        // this.$store.commit('setFormData', {
+        //   key: this.keyName,
+        //   value
+        // });
       }
       this.toggle();
       // 如果立即执行validate,validate函数中拿到的objVal是当前的objVal，

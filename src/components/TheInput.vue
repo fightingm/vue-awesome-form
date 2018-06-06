@@ -26,20 +26,22 @@ export default {
         return this.objVal;
       },
       set: function(value) {
-        this.$store.commit('setFormData', {
+        this.dispatch('HelloWorld', 'on-set-form-data', {
           key: this.keyName,
           value
         });
+        // this.$store.commit('setFormData', {
+        //   key: this.keyName,
+        //   value
+        // });
       }
     }
   },
   mounted() {
     this.dispatch('HelloWorld', 'on-form-item-add', this);
-    // console.log(this.msg)
-    console.log(this.objKey, this.msg);
-    Object.defineProperty(this, 'initialValue', {
-        value: this.msg
-    });
+    // Object.defineProperty(this, 'initialValue', {
+    //     value: this.msg
+    // });
     // 下面这种做法会抛出警告
     // this.$set(this, 'initialValue', this.msg);
   },
