@@ -236,6 +236,7 @@ export default {
       text-overflow: ellipsis;
       vertical-align: middle;
       border-bottom: 1px solid #e9eaec;
+      padding: 9px 0;
     }
 }
 .jf-table-header {

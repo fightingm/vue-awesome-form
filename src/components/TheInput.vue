@@ -4,7 +4,6 @@
     <div class="jf-form-item-content">
       <div class="jf-input-wrapper jf-input-type">
         <input class="jf-input" type="text" v-model="msg" @blur="handleBlur">
-        {{msg}}
         <slot></slot>
       </div>
       <div class="jf-form-item-error-tip" v-if="showValidate">{{validateInfo}}</div>

@@ -226,7 +226,12 @@ export default {
                           "value": "other",
                           "label": "其他"
                         }
-                      ]
+                      ],
+                      "rules": {
+                        "required": true,
+                        "message": "工作不能为空",
+                        "trigger": "blur"
+                      }
                     },
                     "education": {
                       "type": "TheAddInput",
@@ -289,12 +294,18 @@ export default {
                               "value": 4,
                               "label": "其他"
                             }
-                          ]
+                          ],
+                          "rules": {
+                            "type": "number",
+                            "required": true,
+                            "message": "类型不能为空",
+                            "trigger": "blur"
+                          }
                         }
                       },
                       "addDefault": {
-                        "type": 2,
-                        "name": "Walter"
+                        "type": "",
+                        "name": ""
                       },
                       "rules": {
                         "type": "array",
@@ -318,7 +329,7 @@ export default {
                 },
                 "introduce": '',
                 "education": [''],
-                "job": "other",
+                "job": "",
                 "pets": [{
                   "type": 1,
                   "name": "Walter"

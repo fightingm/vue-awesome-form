@@ -6,7 +6,8 @@
         <div tabindex="0" class="jf-select-selection">
           <input type="hidden" value="shanghai">
           <div @click="toggle">
-            <span class="jf-select-selected-value">{{selectVal.label}}</span>
+            <span v-if="selectVal" class="jf-select-selected-value">{{selectVal.label}}</span>
+            <span v-else class="jf-select-placeholder">请选择</span>
             <i 
               :class="[
                 'jf-select-arrow', 
@@ -32,15 +33,19 @@
           </div>
         </transition>
       </div>
+      <div class="jf-form-item-error-tip" v-if="showValidate">{{validateInfo}}</div>      
     </div>
   </div>
 </template>
 
 <script>
+import schema from 'async-validator';
+import Emitter from '../emitter';
 
 export default {
   name: 'TheSelect',
-  props: ["options", 'title', 'objKey', 'objVal', 'noLabel'],
+  mixins: [ Emitter ],
+  props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
   computed: {
     msg: {
       get () {
@@ -60,7 +65,25 @@ export default {
         return this.options.filter(item => {
           return item.value === this.objVal;
         })[0];
+    },
+    showValidate() {
+      if(this.validateObj !== undefined) {
+        return this.validateObj.validateState === 'error'
+      } else {
+        return this.validateState === 'error'
       }
+    },
+    validateInfo() {
+      if(this.validateObj !== undefined) {
+        return this.validateObj.validateMessage
+      } else {
+        return this.validateMessage
+      }
+    }
+  },
+  mounted() {
+    this.dispatch('HelloWorld', 'on-form-item-add', this);
+    // this.dispatch('TheAddInput', 'on-input-add', this);
   },
   methods: {
     toggle() {
@@ -74,12 +97,45 @@ export default {
         });
       }
       this.toggle();
+      // 如果立即执行validate,validate函数中拿到的objVal是当前的objVal，
+      // 所以需要在下次 DOM 更新循环结束之后执行验证函数
+      this.$nextTick(() => {
+        this.validate();
+      });
+      
+    },
+    validate() {
+      if(!this.rules) return;
+      var descriptor = {
+        name: this.rules
+      };
+      var validator = new schema(descriptor);
+      console.log('val', this.objVal, 'rule', descriptor);
+      validator.validate({name: this.objVal}, (err, fields) => {
+        let state = !err ? 'success' : 'error';
+        let msg = err ? err[0].message : '';
+        if(this.validateObj !== undefined) {
+          this.dispatch(this.parentName, 'on-input-validate', {
+            // index: this.keyIndex,
+            keyArr: this.keyArr,
+            validateObj: {
+              validateState: state,
+              validateMessage: msg
+            }
+          });
+        }else {
+          this.validateState = state;
+          this.validateMessage = msg;
+        }
+      })
     }
   },
   data () {
     return {
       keyName: this.objKey,
-      selectVisible: false
+      selectVisible: false,
+      validateState: '',
+      validateMessage: ''
       // options: this.options
     }
   }
@@ -117,6 +173,9 @@ export default {
     border-radius: 4px;
     border: 1px solid #dddee1;
     transition: all .2s ease-in-out;
+    & .jf-select-placeholder {
+      color: #bbbec4;
+    }
 }
 .jf-select-dropdown {
     width: 100%;
@@ -135,7 +194,7 @@ export default {
     position: absolute;
     z-index: 900;
 }
-.jf-select-selected-value {
+.jf-select-selected-value, .jf-select-placeholder {
     display: block;
     height: 30px;
     line-height: 30px;

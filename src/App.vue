@@ -149,5 +149,11 @@ article, aside, blockquote, body, button, dd, details, div, dl, dt, fieldset, fi
       padding-top: 6px;
       color: #ed3f14;
 }
+.jf-table {
+    & .jf-form-item-error-tip {
+      position: static;
+      text-align: left;
+    }
+}
 
 </style>
