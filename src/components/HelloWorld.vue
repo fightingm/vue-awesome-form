@@ -3,9 +3,9 @@
     <the-tree
       v-for="(val, key, index) in orderProperty(formData.schema)"
       :key="index"
-      :objKey="key"
+      :objKey="[key]"
       :objVal="objVal[key]"
-      :model="val"></the-tree>
+      v-bind="val"></the-tree>
     <div style="text-align: center; margin-top: 10px;">
       <Button @click="handleReset" type="warning">重置</Button>
       <Button @click="handleSubmit" type="primary">提交</Button>
@@ -172,9 +172,9 @@ export default {
       "fields": [],
       "formData": {
         "schema": {
-          "person": {
-                "type": "TheTitle",
-                "title": "个人信息",
+          "register": {
+                "type": "TheTree",
+                "title": "注册",
                 "properties": {
                     "name": {
                         "type": "TheInput",
@@ -243,7 +243,7 @@ export default {
                       }
                     },
                     "location": {
-                      "type": "TheTitle",
+                      "type": "TheTree",
                       "title": "地址信息",
                       "propertyOrder": 3,
                       "properties": {
@@ -425,10 +425,37 @@ export default {
                       }
                     }
                 }
+            },
+            "login": {
+              "type": "TheTree",
+              "title": "登录信息",
+              "properties": {
+                "name": {
+                    "type": "TheInput",
+                    "title": "姓名",
+                    "rules": {
+                      "required": true,
+                      "message": "The name cannot be empty",
+                      "trigger": "blur"
+                    }
+                },
+                "passward": {
+                    "type": "TheInput",
+                    "title": "密码",
+                    "rules": {
+                      "required": true,
+                      "message": "The 密码 cannot be empty",
+                      "trigger": "blur"
+                    }
+                }
+              }
             }
+        
+        
+        
         },
         "value": {
-            "person": {
+            "register": {
                 "name": "",
                 "age": "25",
                 "gender": '',
@@ -446,6 +473,10 @@ export default {
                   "gender": 1,
                   "interests": [1, 2]
                 }]
+            },
+            "login": {
+              "name": "",
+              "passward": ""
             }
         }
       }
@@ -456,21 +487,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-.jf-form {
-  text-align: left;
-}
 </style>

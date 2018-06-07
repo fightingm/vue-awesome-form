@@ -1,17 +1,22 @@
 <template>
   <div>
-    <h2>{{title}}</h2>
+    <h2 :style="{fontSize: calcSize}">{{title}}</h2>
+    <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
   name: 'TheTitle',
-  props: ['title', 'objKey'],
+  props: ['title', 'level'],
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
       keyName: this.objKey
+    }
+  },
+  computed: {
+    calcSize() {
+      return Math.max(24 - (this.level - 1) * 4, 12) + 'px';
     }
   }
 }

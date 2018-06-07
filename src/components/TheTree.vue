@@ -1,15 +1,15 @@
 <template>
-  <div>
-    <component :is="model.type" :objKey="objKey" :objVal="objVal" v-bind="model">
-    </component>
-    <div v-if="model.properties">
-      <the-tree
-        v-for="(val, key, index) in orderProperty(model.properties)"
+  <div class="jf-tree">
+    <the-title :title="title" :level="objKey.length"></the-title>
+    <div class="jf-tree-item">
+      <component
+        v-for="(val, key, index) in orderProperty(properties)"
         :key="index"
-        :objKey="getObjKeys(objKey, key)"
+        :is="val.type" 
+        :objKey="getObjKeys(objKey, key)" 
         :objVal="getObjVal(key)"
-        :model="val"
-      ></the-tree>
+        v-bind="val">
+      </component>
     </div>
   </div>
 </template>
@@ -38,7 +38,7 @@ export default {
     TheAddInput,
     TheTable
   },
-  props: ['model', 'objKey', 'objVal'],
+  props: ['title', 'properties', 'objKey', 'objVal'],
   methods: {
     getObjVal(key) {
       return this.objVal[key];
@@ -82,12 +82,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .jf-form-item-error-tip {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      line-height: 1;
-      padding-top: 6px;
-      color: #ed3f14;
+  .jf-tree {
+    padding-left: 30px;
   }
 </style>

@@ -1,0 +1,68 @@
+.jf-table-wrapper {
+    position: relative;
+    border: 1px solid #dddee1;
+    border-bottom: 0;
+    border-right: 0;
+}
+.jf-table {
+  width: inherit;
+  height: 100%;
+  max-width: 100%;
+  color: #495060;
+  font-size: 12px;
+  background-color: #fff;
+  box-sizing: border-box;
+  & table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  &:after, &:before {
+    content: "";
+    position: absolute;
+    background-color: #dddee1;
+  }
+  &:before {
+    width: 100%;
+    height: 1px;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+  & th {
+    height: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: #f8f8f9;
+  }
+  & td {
+    background-color: #fff;
+    transition: background-color .2s ease-in-out;
+  }
+  & th, & td {
+    min-width: 0;
+    height: 48px;
+    box-sizing: border-box;
+    text-align: center;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    border-bottom: 1px solid #e9eaec;
+    padding: 9px 0;
+  }
+}
+.jf-table-header {
+  overflow: hidden;
+}
+.jf-table-border td, .jf-table-border th {
+  border-right: 1px solid #e9eaec;
+}
+.jf-table-cell {
+  padding-left: 18px;
+  padding-right: 18px;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-all;
+  box-sizing: border-box;
+  & .jf-form-item {
+    margin-bottom: 0;
+  }
+}

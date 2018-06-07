@@ -1,0 +1,100 @@
+.jf-select {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    vertical-align: middle;
+    color: #495060;
+    font-size: 14px;
+    line-height: normal;
+    position: relative;
+    & ul {
+        padding-left: 0!important;
+        list-style-type: none;
+    }
+    & li {
+        margin-bottom: 0;
+    }
+}
+.jf-select-selection {
+    display: block;
+    height: 32px;
+    box-sizing: border-box;
+    outline: 0;
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #dddee1;
+    transition: all .2s ease-in-out;
+    & .jf-select-placeholder {
+      color: #bbbec4;
+    }
+}
+.jf-select-dropdown {
+    width: 100%;
+    transform-origin: center top 0px;
+    will-change: top, left;
+    top: 32px;
+    left: 0px;
+    max-height: 200px;
+    overflow: auto;
+    margin: 5px 0;
+    padding: 5px 0;
+    background-color: #fff;
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.2);
+    position: absolute;
+    z-index: 900;
+}
+.jf-select-selected-value, .jf-select-placeholder {
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 8px;
+    padding-right: 24px;
+}
+.jf-select-arrow {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    line-height: 1;
+    transition: all .2s ease-in-out;
+    border: .45em solid transparent;
+    border-top-color: #80848f;
+}
+.jf-select-arrow-up {
+  transform: rotate(180deg);
+  margin-top: -0.675em;
+}
+.jf-select-arrow-down {
+  margin-top: -0.225em;
+}
+.jf-select-dropdown-list {
+    min-width: 100%;
+    list-style: none;
+}
+.jf-select-item {
+    margin: 0;
+    line-height: normal;
+    padding: 7px 16px;
+    clear: both;
+    color: #495060;
+    font-size: 12px!important;
+    white-space: nowrap;
+    list-style: none;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
+    &:hover {
+      background: #f3f3f3;
+    }
+}
+.jf-select-item-selected, .jf-select-item-selected:hover {
+    color: #fff;
+    background: rgba(45,140,240,.9);
+}

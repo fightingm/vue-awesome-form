@@ -75,6 +75,9 @@ article, aside, blockquote, body, button, dd, details, div, dl, dt, fieldset, fi
   color: #2c3e50;
   margin-top: 60px;
 }
+.jf-form {
+  text-align: left;
+}
 .jf-form-item {
   margin-bottom: 24px;
 }
@@ -111,36 +114,7 @@ article, aside, blockquote, body, button, dd, details, div, dl, dt, fieldset, fi
         margin-left: 80px;
     }
 }
-.jf-input-wrapper {
-    display: flex;
-    width: 100%;
-    position: relative;
-    vertical-align: middle;
-    line-height: normal;
-}
-.jf-input {
-    display: inline-block;
-    width: 100%;
-    height: 32px;
-    line-height: 1.5;
-    padding: 4px 7px;
-    font-size: 12px;
-    border: 1px solid #dddee1;
-    border-radius: 4px;
-    color: #495060;
-    background-color: #fff;
-    background-image: none;
-    position: relative;
-    cursor: text;
-    transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;
-    &:focus {
-      outline: 0;
-        box-shadow: 0 0 0 2px rgba(45,140,240,.2);  
-    }
-    &:hover {
-        border-color: #57a3f3;
-    }
-}
+
 .jf-form-item-error-tip {
       position: absolute;
       top: 100%;

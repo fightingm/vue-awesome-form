@@ -57,11 +57,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  textarea.jf-input {
-      max-width: 100%;
-      height: auto;
-      vertical-align: bottom;
-      font-size: 14px;
-      min-height: 52px;
-  }
+  @import "../styles/input.css";
 </style>
