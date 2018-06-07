@@ -16,7 +16,8 @@ yarn add vue-awesome-form
 ``` js
 import Vue from 'vue'
 import SchemaForm from 'vue-awesome-form'
-import 'vue-awesome-form/styles/vue-awesome-form.css'
+import 'vue-awesome-form/dist/styles/vue-awesome-form.css'
+
 Vue.component('schema-form', SchemaForm)
 ```
 
