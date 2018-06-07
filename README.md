@@ -1,21 +1,33 @@
-# vue-json-schema
+# vue-awesome-form
 
-> A Vue.js project
+> A schema-based form generator component for Vue.js.
 
-## Build Setup
+## 安装
 
 ``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+# 可以通过npm或者yarn安装
+npm install vue-awesome-form 
+yarn add vue-awesome-form
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## 使用
+
+注册组件
+``` js
+import Vue from 'vue'
+import SchemaForm from 'vue-awesome-form'
+import 'vue-awesome-form/styles/vue-awesome-form.css'
+Vue.component('schema-form', SchemaForm)
+```
+
+在组件中使用
+```html
+<schema-form
+      ref="schemaForm"
+      :schema="formData.schema"
+      :value="formData.value"
+    ></schema-form>
+```
+
+
+
