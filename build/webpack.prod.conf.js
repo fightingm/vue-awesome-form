@@ -27,8 +27,8 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
-    filename: 'vue-json-form.js',
-    library: 'vue-json-form',
+    filename: 'vue-awesome-form.js',
+    library: 'vue-awesome-form',
     libraryTarget: 'umd',
     umdNamedDefine: true
     // filename: utils.assetsPath('js/[name].[chunkhash].js'),
@@ -58,7 +58,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     // extract css into its own file
     new ExtractTextPlugin({
-      filename: utils.stylesPath('vue-json-form.css'),
+      filename: utils.stylesPath('vue-awesome-form.css'),
       // Setting the following option to `false` will not extract CSS from codesplit chunks.
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
       // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 

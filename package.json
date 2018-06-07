@@ -1,10 +1,10 @@
 {
-  "name": "vue-json-form",
+  "name": "vue-awesome-form",
   "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "kaiming.xu <kaiming.xu@qunar.com>",
-  "private": true,
-  "main": "dist/vue-json-form.js",
+  "description": "A schema-based form generator component for Vue.js",
+  "author": "fightingm <417300459@qq.com>",
+  "private": false,
+  "main": "dist/vue-awesome-form.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
