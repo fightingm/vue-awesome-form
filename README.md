@@ -35,7 +35,6 @@ CDN使用
 <script src="https://unpkg.com/vue-awesome-form@1.0.0/dist/styles/vue-awesome-form.css"></script>
 ```
 
-demo
-<iframe width="100%" height="300" src="//jsrun.net/bKgKp/embedded/all/light/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+demo地址： <https://jsrun.net/bKgKp/embedded/all/light/>
 
 上面的demo包含了组件的所有功能及支持的表单项。
