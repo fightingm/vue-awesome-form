@@ -4,6 +4,7 @@
   "description": "A Vue.js project",
   "author": "kaiming.xu <kaiming.xu@qunar.com>",
   "private": true,
+  "main": "dist/vue-json-form.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
@@ -12,9 +13,7 @@
   "dependencies": {
     "async-validator": "^1.8.2",
     "postcss-preset-env": "^5.1.0",
-    "shortid": "^2.2.8",
-    "vue": "^2.5.2",
-    "vuex": "^3.0.1"
+    "vue": "^2.5.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

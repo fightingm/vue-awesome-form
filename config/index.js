@@ -11,6 +11,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},
+    stylesSubDirectory: 'styles',
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -44,6 +45,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    stylesSubDirectory: 'styles',
 
     /**
      * Source Maps

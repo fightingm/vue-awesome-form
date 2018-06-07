@@ -56,7 +56,7 @@ export default {
         //       }, this.$store.state.formValue)
       },
       set (value) {
-        this.dispatch('HelloWorld', 'on-set-form-data', {
+        this.dispatch('SchemaForm', 'on-set-form-data', {
           key: this.keyName,
           value
         });
@@ -73,7 +73,7 @@ export default {
     }
   },
   mounted() {
-    this.dispatch('HelloWorld', 'on-form-item-add', this);
+    this.dispatch('SchemaForm', 'on-form-item-add', this);
   },
   methods: {
     toggle() {
@@ -81,7 +81,7 @@ export default {
     },
     select(value) {
       if(this.msg !== value) {
-        this.dispatch('HelloWorld', 'on-set-form-data', {
+        this.dispatch('SchemaForm', 'on-set-form-data', {
           key: this.keyName,
           value
         });
@@ -109,6 +109,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="postcss" scoped>
+<style lang="postcss">
   @import "../styles/select.css";
 </style>

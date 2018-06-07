@@ -40,6 +40,6 @@
     };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
     @import "../styles/button.css";
 </style>

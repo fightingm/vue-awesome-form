@@ -26,7 +26,7 @@ export default {
         return this.objVal;
       },
       set: function(value) {
-        this.dispatch('HelloWorld', 'on-set-form-data', {
+        this.dispatch('SchemaForm', 'on-set-form-data', {
           key: this.keyName,
           value
         });
@@ -38,7 +38,7 @@ export default {
     }
   },
   mounted() {
-    this.dispatch('HelloWorld', 'on-form-item-add', this);
+    this.dispatch('SchemaForm', 'on-form-item-add', this);
     // Object.defineProperty(this, 'initialValue', {
     //     value: this.msg
     // });
@@ -62,6 +62,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="postcss" scoped>
+<style lang="postcss">
   @import "../styles/input.css";
 </style>

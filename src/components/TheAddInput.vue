@@ -72,7 +72,7 @@ export default {
     })
   },
   mounted() {
-    this.dispatch('HelloWorld', 'on-form-item-add', this);
+    this.dispatch('SchemaForm', 'on-form-item-add', this);
   },
   methods: {
     // 使用index做key会带来一些列的问题，所以使用shortid为数组的每一项生成唯一的id
@@ -119,7 +119,7 @@ export default {
       this.setFormData(newVal);
     },
     setFormData(value) {
-      this.dispatch('HelloWorld', 'on-set-form-data', {
+      this.dispatch('SchemaForm', 'on-set-form-data', {
         key: this.keyName,
         value
       });

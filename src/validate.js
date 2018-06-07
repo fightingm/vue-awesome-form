@@ -1,7 +1,7 @@
 import schema from 'async-validator';
 export default {
     beforeDestroy () {
-        this.dispatch('HelloWorld', 'on-form-item-remove', this);
+        this.dispatch('SchemaForm', 'on-form-item-remove', this);
     },
     computed: {
         showValidate() {
