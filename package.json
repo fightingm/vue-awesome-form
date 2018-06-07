@@ -10,6 +10,10 @@
     "start": "npm run dev",
     "build": "node build/build.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fightingm/vue-awesome-form.git"
+  },
   "dependencies": {
     "async-validator": "^1.8.2",
     "postcss-preset-env": "^5.1.0",
