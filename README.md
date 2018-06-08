@@ -32,8 +32,8 @@ Vue.component('schema-form', SchemaForm)
 
 CDN使用
 ```html
-<script src="https://unpkg.com/vue-awesome-form@1.0.3/dist/main.js"></script>
-<script src="https://unpkg.com/vue-awesome-form@1.0.3/dist/main.css"></script>
+<script src="https://unpkg.com/vue-awesome-form@latest/dist/main.js"></script>
+<script src="https://unpkg.com/vue-awesome-form@latest/dist/main.css"></script>
 ```
 
 demo地址： <https://jsrun.net/bKgKp/embedded/all/light/>
