@@ -1,6 +1,6 @@
 {
   "name": "vue-awesome-form",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A schema-based form generator component for Vue.js",
   "author": "fightingm <417300459@qq.com>",
   "private": false,
