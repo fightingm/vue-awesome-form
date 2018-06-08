@@ -2,9 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-// import SchemaForm from '../src/vue-awesome-form.js'
-import SchemaForm from '../src/main.js';
-// import '../dist/styles/vue-awesome-form.css';
+import SchemaForm from '../dist/main.js'
+// import SchemaForm from '../src/main.js';
+import '../dist/main.css';
 
 // Vue.config.productionTip = false
 Vue.component('schema-form', SchemaForm)

@@ -11,13 +11,6 @@ exports.assetsPath = function (_path) {
 
   return path.posix.join(assetsSubDirectory, _path)
 }
-exports.stylesPath = function (_path) {
-  const stylesSubDirectory = process.env.NODE_ENV === 'production'
-    ? config.build.stylesSubDirectory
-    : config.dev.stylesSubDirectory
-
-  return path.posix.join(stylesSubDirectory, _path)
-}
 
 exports.cssLoaders = function (options) {
   options = options || {}
