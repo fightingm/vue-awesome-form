@@ -16,7 +16,7 @@ yarn add vue-awesome-form
 ``` js
 import Vue from 'vue'
 import SchemaForm from 'vue-awesome-form'
-import 'vue-awesome-form/dist/styles/vue-awesome-form.css'
+import 'vue-awesome-form/dist/main.css'
 
 Vue.component('schema-form', SchemaForm)
 ```
@@ -32,8 +32,8 @@ Vue.component('schema-form', SchemaForm)
 
 CDN使用
 ```html
-<script src="https://unpkg.com/vue-awesome-form@1.0.0/dist/vue-awesome-form.js"></script>
-<script src="https://unpkg.com/vue-awesome-form@1.0.0/dist/styles/vue-awesome-form.css"></script>
+<script src="https://unpkg.com/vue-awesome-form@1.0.3/dist/main.js"></script>
+<script src="https://unpkg.com/vue-awesome-form@1.0.3/dist/main.css"></script>
 ```
 
 demo地址： <https://jsrun.net/bKgKp/embedded/all/light/>
