@@ -71,11 +71,6 @@ export default {
       //     }
       // }
       // return obj;
-      // var result={};
-      // for (var key in source) {
-      //     result[key] = typeof(source[key]) ==='object' ? this.cloneDeep(source[key]) : source[key];
-      // } 
-      // return result; 
     },
     setFormData(payload) {
         const { key, value } = payload;

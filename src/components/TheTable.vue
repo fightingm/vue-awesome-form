@@ -47,6 +47,7 @@
 
 <script>
 import TheInput from './TheInput';
+import ThePassInput from './ThePassInput';
 import TheTextArea from './TheTextArea';
 import TheSelect from './TheSelect';
 import TheRadio from './TheRadio';
@@ -59,6 +60,7 @@ export default {
   name: 'TheTable',
   components: {
     TheInput,
+    ThePassInput,
     TheTextArea,
     TheSelect,
     TheRadio,
@@ -188,12 +190,10 @@ export default {
           }
         })
       })
-      
     }
   },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
       keyName: this.objKey,
       validateState: '',
       validateMessage: '',

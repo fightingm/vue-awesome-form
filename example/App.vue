@@ -51,8 +51,7 @@ export default {
                         "title": "姓名",
                         "rules": {
                           "required": true,
-                          "message": "The name cannot be empty",
-                          "trigger": "blur"
+                          "message": "The name cannot be empty"
                         }
                     },
                     "age": {
@@ -61,8 +60,7 @@ export default {
                         "rules": [
                           {
                             "required": true,
-                            "message": "The age cannot be empty",
-                            "trigger": "blur"
+                            "message": "The age cannot be empty"
                           }
                         ]
                     },
@@ -83,8 +81,7 @@ export default {
                       "rules": {
                         "type": "number",
                         "required": true,
-                        "message": "The 性别 cannot be empty",
-                        "trigger": "blur"
+                        "message": "The 性别 cannot be empty"
                       }
                     },
                     "interests": {
@@ -108,8 +105,7 @@ export default {
                       "rules": {
                         "type": "array",
                         "required": true,
-                        "message": "The 兴趣爱好 cannot be empty",
-                        "trigger": "blur"
+                        "message": "The 兴趣爱好 cannot be empty"
                       }
                     },
                     "location": {
@@ -122,8 +118,7 @@ export default {
                           "title": "省份",
                           "rules": {
                             "required": true,
-                            "message": "The 省份 cannot be empty",
-                            "trigger": "blur"
+                            "message": "The 省份 cannot be empty"
                           }
                         },
                         "city": {
@@ -131,8 +126,7 @@ export default {
                           "title": "市",
                           "rules": {
                             "required": true,
-                            "message": "The 市 cannot be empty",
-                            "trigger": "blur"
+                            "message": "The 市 cannot be empty"
                           }
                         }
                       }
@@ -161,8 +155,7 @@ export default {
                       ],
                       "rules": {
                         "required": true,
-                        "message": "工作不能为空",
-                        "trigger": "blur"
+                        "message": "工作不能为空"
                       }
                     },
                     "education": {
@@ -173,13 +166,11 @@ export default {
                         "myRule": {
                             "type": "array",
                             "required": true,
-                            "message": "The 教育信息 cannot be empty",
-                            "trigger": "blur"
+                            "message": "The 教育信息 cannot be empty"
                           },
                           "childRule": {
                             "required": true,
-                            "message": "这一项不能为空",
-                            "trigger": "blur"
+                            "message": "这一项不能为空"
                           }
                       }
                     },
@@ -188,8 +179,7 @@ export default {
                         "title": "个人介绍",
                         "rules": {
                           "required": true,
-                          "message": "The 个人介绍 cannot be empty",
-                          "trigger": "blur"
+                          "message": "The 个人介绍 cannot be empty"
                         }
                     },
                     "pets": {
@@ -201,8 +191,7 @@ export default {
                           "title": "名字",
                           "rules": {
                             "required": true,
-                            "message": "名字不能为空",
-                            "trigger": "blur"
+                            "message": "名字不能为空"
                           }
                         },
                         "type": {
@@ -230,8 +219,7 @@ export default {
                           "rules": {
                             "type": "number",
                             "required": true,
-                            "message": "类型不能为空",
-                            "trigger": "blur"
+                            "message": "类型不能为空"
                           }
                         },
                         "gender": {
@@ -251,8 +239,7 @@ export default {
                           "rules": {
                             "type": "number",
                             "required": true,
-                            "message": "The 性别 cannot be empty",
-                            "trigger": "blur"
+                            "message": "The 性别 cannot be empty"
                           }
                         },
                         "interests": {
@@ -276,8 +263,7 @@ export default {
                           "rules": {
                             "type": "array",
                             "required": true,
-                            "message": "The 兴趣爱好 cannot be empty",
-                            "trigger": "blur"
+                            "message": "The 兴趣爱好 cannot be empty"
                           }
                         }
                       },
@@ -290,8 +276,7 @@ export default {
                       "rules": {
                         "type": "array",
                         "required": true,
-                        "message": "The 宠物信息 cannot be empty",
-                        "trigger": "blur"
+                        "message": "The 宠物信息 cannot be empty"
                       }
                     }
                 }
@@ -305,17 +290,15 @@ export default {
                     "title": "姓名",
                     "rules": {
                       "required": true,
-                      "message": "The name cannot be empty",
-                      "trigger": "blur"
+                      "message": "The name cannot be empty"
                     }
                 },
                 "passward": {
-                    "type": "TheInput",
+                    "type": "ThePassInput",
                     "title": "密码",
                     "rules": {
                       "required": true,
-                      "message": "The 密码 cannot be empty",
-                      "trigger": "blur"
+                      "message": "The 密码 cannot be empty"
                     }
                 }
               }

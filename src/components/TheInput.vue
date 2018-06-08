@@ -3,7 +3,8 @@
     <label class="jf-form-item-label" v-if="!noLabel">{{title}}</label>
     <div class="jf-form-item-content">
       <div class="jf-input-wrapper jf-input-type">
-        <input class="jf-input" type="text" v-model="msg" @blur="handleBlur">
+        <textarea v-if="theFormat === 'textarea'" v-model="msg" wrap="soft" autocomplete="off" spellcheck="false" rows="2" class="jf-input" @blur="handleBlur"></textarea>
+        <input v-else class="jf-input" :type="theFormat || 'text'" v-model="msg" @blur="handleBlur">
         <slot></slot>
       </div>
       <div class="jf-form-item-error-tip" v-if="showValidate">{{validateInfo}}</div>
@@ -19,7 +20,7 @@ import Validate from '../validate';
 export default {
   name: 'TheInput',
   mixins: [ Emitter, Validate ],
-  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
+  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName', 'theFormat'],
   computed: {
     msg: {
       get: function() {
