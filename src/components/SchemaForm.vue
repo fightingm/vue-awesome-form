@@ -1,11 +1,11 @@
 <template>
   <form class="jf-form">
     <the-tree
-      v-for="(val, key, index) in orderProperty(schema)"
-      :key="index"
-      :objKey="[key]"
-      :objVal="formValue[key]"
-      v-bind="val"></the-tree>
+      v-for="item in orderProperty(schema)"
+      :key="item.key"
+      :objKey="[item.key]"
+      :objVal="formValue[item.key]"
+      v-bind="item.val"></the-tree>
     <!-- <div style="text-align: center; margin-top: 10px;">
       <Button @click="handleReset" type="warning">重置</Button>
       <Button @click="handleSubmit" type="primary">提交</Button>
@@ -138,10 +138,11 @@ export default {
         };
       }).sort((pre, cur) => {
         return (pre.val.propertyOrder || 999) - (cur.val.propertyOrder || 999);
-      }).reduce((pre, cur) => {
-        pre[cur.key] = cur.val;
-        return pre;
-      }, {});
+      });
+      // .reduce((pre, cur) => {
+      //   pre[cur.key] = cur.val;
+      //   return pre;
+      // }, {});
     },
     onFieldBlur() {
       console.log(arguments);

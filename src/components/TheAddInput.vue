@@ -151,16 +151,6 @@ export default {
           }
         })
       })
-      // if(!this.rules) return;
-      // // console.log(this.rules);
-      // var descriptor = {
-      //   name: this.rules.myRule
-      // };
-      // var validator = new schema(descriptor);
-      // validator.validate({name: this.objVal}, (err, fields) => {
-      //   this.validateState = !err ? 'success' : 'error';
-      //   this.validateMessage = err ? err[0].message : '';
-      // })
     }
   },
   data () {

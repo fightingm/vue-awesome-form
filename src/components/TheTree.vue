@@ -3,12 +3,12 @@
     <the-title :title="title" :level="objKey.length"></the-title>
     <div class="jf-tree-item">
       <component
-        v-for="(val, key, index) in orderProperty(properties)"
-        :key="index"
-        :is="val.type" 
-        :objKey="getObjKeys(objKey, key)" 
-        :objVal="getObjVal(key)"
-        v-bind="val">
+        v-for="item in orderProperty(properties)"
+        :key="item.key"
+        :is="item.val.type" 
+        :objKey="getObjKeys(objKey, item.key)" 
+        :objVal="getObjVal(item.key)"
+        v-bind="item.val">
       </component>
     </div>
   </div>
@@ -68,10 +68,11 @@ export default {
         };
       }).sort((pre, cur) => {
         return (pre.val.propertyOrder || 999) - (cur.val.propertyOrder || 999);
-      }).reduce((pre, cur) => {
-        pre[cur.key] = cur.val;
-        return pre;
-      }, {});
+      });
+      // .reduce((pre, cur) => {
+      //   pre[cur.key] = cur.val;
+      //   return pre;
+      // }, {});
     }
   },
   data () {

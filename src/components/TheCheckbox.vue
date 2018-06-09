@@ -4,8 +4,8 @@
     <div class="jf-form-item-content">
       <div class="jf-checkbox-group">
         <label
-          v-for="(item, index) in options"
-          :key="index"
+          v-for="item in options"
+          :key="item.value"
           :class="['jf-checkbox-wrapper', 'jf-checkbox-group-item', { 'jf-checkbox-wrapper-checked': msg.indexOf(item.value) !== -1 }]"
           @change="handleChange">
           <span :class="['jf-checkbox', { 'jf-checkbox-checked': msg.indexOf(item.value) !== -1 }]">

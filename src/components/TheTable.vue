@@ -7,27 +7,27 @@
           <table cellspacing="0" cellpadding="0" border="0">
             <thead class="jf-table-header">
               <th
-                v-for="(val, key, index) in orderColumns"
+                v-for="(item, index) in orderColumns"
                 :key="index"
-              >{{val.title}}</th>
+              >{{item.val.title}}</th>
               <th>编辑</th>
             </thead>
             <tr
               v-for="(item, index) in objVal"
               :key="index">
               <td
-                v-for="(val, key, idx) in orderColumns"
+                v-for="(col, idx) in orderColumns"
                 :key="idx">
                 <div class="jf-table-cell">
                   <component 
-                    :is="val.type" 
-                    :objKey="getObjKey(index, key)" 
-                    :objVal="getObjVal(index, key)"
-                    :validateObj="getValidateObj(index, key)"
-                    :keyArr="[index, key]"
+                    :is="col.val.type" 
+                    :objKey="getObjKey(index, col.key)" 
+                    :objVal="getObjVal(index, col.key)"
+                    :validateObj="getValidateObj(index, col.key)"
+                    :keyArr="[index, col.key]"
                     parentName="TheTable"
                     :noLabel="true" 
-                    v-bind="val"></component>
+                    v-bind="col.val"></component>
                 </div>
               </td>
               <td>
@@ -162,10 +162,11 @@ export default {
         };
       }).sort((pre, cur) => {
         return (pre.val.propertyOrder || 999) - (cur.val.propertyOrder || 999);
-      }).reduce((pre, cur) => {
-        pre[cur.key] = cur.val;
-        return pre;
-      }, {});
+      });
+      // .reduce((pre, cur) => {
+      //   pre[cur.key] = cur.val;
+      //   return pre;
+      // }, {});
     },
     validate() {
       return new Promise((resolve, reject) => {

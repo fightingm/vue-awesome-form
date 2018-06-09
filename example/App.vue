@@ -67,7 +67,7 @@ export default {
                     "gender": {
                       "type": "TheRadio",
                       "title": "性别",
-                      "propertyOrder": 1,
+                      "propertyOrder": 10,
                       "options": [
                         {
                           "value": 1,
@@ -87,7 +87,7 @@ export default {
                     "interests": {
                       "type": "TheCheckbox",
                       "title": "兴趣爱好",
-                      "propertyOrder": 2,
+                      "propertyOrder": 1,
                       "options": [
                         {
                           "value": 1,
@@ -225,7 +225,7 @@ export default {
                         "gender": {
                           "type": "TheRadio",
                           "title": "性别",
-                          "propertyOrder": 1,
+                          "propertyOrder": 3,
                           "options": [
                             {
                               "value": 1,

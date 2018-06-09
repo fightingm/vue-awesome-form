@@ -21,8 +21,8 @@
           <div v-show="selectVisible" class="jf-select-dropdown" x-placement="bottom">
               <ul class="jf-select-dropdown-list">
                 <li
-                  v-for="(item, index) in options"
-                  :key="index"
+                  v-for="item in options"
+                  :key="item.value"
                   :class="[
                     'jf-select-item',
                     { 'jf-select-item-selected': item.value === msg }

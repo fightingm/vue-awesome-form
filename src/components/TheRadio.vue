@@ -4,8 +4,8 @@
     <div class="jf-form-item-content">
       <div class="jf-radio-group">
         <label 
-          v-for="(item, index) in options"
-          :key="index"
+          v-for="item in options"
+          :key="item.value"
           :class="['jf-radio-wrapper', 'jf-radio-group-item', { 'jf-radio-wrapper-checked': item.value === msg }]"
           @change="handleChange">
           <span :class="['jf-radio', { 'jf-radio-checked': item.value === msg }]">
