@@ -47,15 +47,17 @@
 import TheInput from './TheInput';
 import Button from './button';
 import schema from 'async-validator';
-import Emitter from '../emitter';
+import EventBus from '../eventBus'
+//mixin
+import Base from '../mixins/base';
 
 export default {
   name: 'TheAddInput',
+  mixins: [Base],
   components: {
     TheInput,
     Button
   },
-  mixins: [ Emitter ],
   props: ['title', 'objKey', 'objVal', 'noLabel', 'rules'],
   computed: {
     curVal() {
@@ -66,13 +68,11 @@ export default {
     }
   },
   created() {
-    this.$on('on-input-validate', obj => {
+    EventBus.$on('on-input-validate', obj => {
+      if(obj.parentName !== 'TheAddInput') return;
       this.validateArray.splice(obj.keyArr[0], 1, obj.validateObj);
       return false;
     })
-  },
-  mounted() {
-    this.dispatch('SchemaForm', 'on-form-item-add', this);
   },
   methods: {
     // 使用index做key会带来一些列的问题，所以使用shortid为数组的每一项生成唯一的id
@@ -119,11 +119,11 @@ export default {
       this.setFormData(newVal);
     },
     setFormData(value) {
-      this.dispatch('SchemaForm', 'on-set-form-data', {
+      EventBus.$emit('on-set-form-data', {
         key: this.keyName,
         value
       });
-      // this.$store.commit('setFormData', {
+      // this.dispatch('SchemaForm', 'on-set-form-data', {
       //   key: this.keyName,
       //   value
       // });

@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import TheTree from './TheTree';
+import TheTree from './TheTree'
 import Button from './button'
-import schema from 'async-validator';
+import EventBus from '../eventBus'
 // 表单验证这里参考iview的做法，通过mixin的方式将事件emitter注入到每个组件
 // 通过事件的广播与派发，input组件blur之后向上dispatch事件，
 // 然后在根组件统一负责表单的验证
@@ -28,19 +28,16 @@ export default {
   },
   props: ['schema', 'value'],
   created() {
-    // store.commit('initFormData', {
-    //   value: this.formData.value
-    // });
     this.initFormData(this.value);
-    this.$on('on-form-item-add', field => {
+    EventBus.$on('on-form-item-add', field => {
       if(field) this.fields.push(field);
       return false;
     });
-    this.$on('on-form-item-remove', (field) => {
+    EventBus.$on('on-form-item-remove', (field) => {
       if (field) this.fields.splice(this.fields.indexOf(field), 1);
       return false;
     });
-    this.$on('on-set-form-data', payload => {
+    EventBus.$on('on-set-form-data', payload => {
       this.setFormData(payload);
     });
   },
@@ -143,13 +140,7 @@ export default {
       //   pre[cur.key] = cur.val;
       //   return pre;
       // }, {});
-    },
-    onFieldBlur() {
-      console.log(arguments);
     }
-  },
-  mounted() {
-    this.$on('on-form-blur', this.onFieldBlur);
   },
   data () {
     return {

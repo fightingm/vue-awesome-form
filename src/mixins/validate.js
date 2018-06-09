@@ -1,7 +1,9 @@
 import schema from 'async-validator';
+import EventBus from '../eventBus';
+
 export default {
     beforeDestroy () {
-        this.dispatch('SchemaForm', 'on-form-item-remove', this);
+        EventBus.$emit('on-form-item-remove', this);
     },
     computed: {
         showValidate() {
@@ -25,13 +27,14 @@ export default {
                 // 按理说无法修改props的值，但是这里可以修改，控制台也没有警告
                 // this.validateObj.validateState = '';
                 // this.validateObj.validateMessage = '';
-                this.dispatch(this.parentName, 'on-input-validate', {
+                EventBus.$emit('on-input-validate', {
+                    parentName: this.parentName,
                     keyArr: this.keyArr,
                     validateObj: {
                         validateState: '',
                         validateMessage: ''
                     }
-                });
+                })
             }else {
                 this.validateState = '';
                 this.validateMessage = '';
@@ -53,13 +56,14 @@ export default {
                     let state = !err ? 'success' : 'error';
                     let msg = err ? err[0].message : '';
                     if(this.validateObj !== undefined) {
-                        this.dispatch(this.parentName, 'on-input-validate', {
-                        keyArr: this.keyArr,
-                        validateObj: {
-                            validateState: state,
-                            validateMessage: msg
-                        }
-                        });
+                        EventBus.$emit('on-input-validate', {
+                            parentName: this.parentName,
+                            keyArr: this.keyArr,
+                            validateObj: {
+                                validateState: state,
+                                validateMessage: msg
+                            }
+                        })
                     }else {
                         this.validateState = state;
                         this.validateMessage = msg;
@@ -77,27 +81,6 @@ export default {
                     }
                 })
             })
-            // if(!this.rules) return;
-            // var descriptor = {
-            //   name: this.rules
-            // };
-            // var validator = new schema(descriptor);
-            // validator.validate({name: this.msg}, (err, fields) => {
-            //   let state = !err ? 'success' : 'error';
-            //   let msg = err ? err[0].message : '';
-            //   if(this.validateObj !== undefined) {
-            //     this.dispatch(this.parentName, 'on-input-validate', {
-            //       keyArr: this.keyArr,
-            //       validateObj: {
-            //         validateState: state,
-            //         validateMessage: msg
-            //       }
-            //     });
-            //   }else {
-            //     this.validateState = state;
-            //     this.validateMessage = msg;
-            //   }
-            // })
         }
     }
 }

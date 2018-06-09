@@ -54,10 +54,14 @@ import TheRadio from './TheRadio';
 import TheCheckbox from './TheCheckbox';
 import Button from './button';
 import schema from 'async-validator';
-import Emitter from '../emitter';
+import EventBus from '../eventBus';
+
+//mixin
+import Base from '../mixins/base';
 
 export default {
   name: 'TheTable',
+  mixins: [Base],
   components: {
     TheInput,
     ThePassInput,
@@ -67,7 +71,6 @@ export default {
     TheCheckbox,
     Button
   },
-  mixins: [ Emitter ],
   props: ['title', 'objKey', 'objVal', "addDefault", "columns", "noLabel", "rules"],
   computed: {
     curVal() {
@@ -81,7 +84,8 @@ export default {
     }
   },
   created() {
-    this.$on('on-input-validate', obj => {
+    EventBus.$on('on-input-validate', obj => {
+      if(obj.parentName !== 'TheTable') return;
       obj.keyArr.reduce((pre, cur, curIndex, arr) => {
         if(curIndex === arr.length - 1) {
           if(typeof(cur) === 'number') {
@@ -96,9 +100,6 @@ export default {
       // this.validateArray.splice(obj.index, 1, obj);
       return false;
     })
-  },
-  mounted() {
-    this.dispatch('SchemaForm', 'on-form-item-add', this);
   },
   methods: {
     getValidateObj(index, key) {
@@ -138,14 +139,10 @@ export default {
       this.setFormData(newVal);
     },
     setFormData(value) {
-      this.dispatch('SchemaForm', 'on-set-form-data', {
+      EventBus.$emit('on-set-form-data', {
         key: this.keyName,
         value
       });
-      // this.$store.commit('setFormData', {
-      //   key: this.keyName,
-      //   value
-      // });
     },
     // 根据propertyOrder 从小到大排序
     orderProperty(oldObj) {

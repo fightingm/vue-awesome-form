@@ -40,12 +40,14 @@
 
 <script>
 
-import Emitter from '../emitter';
-import Validate from '../validate';
+import EventBus from '../eventBus';
+//mixin
+import Base from '../mixins/base';
+import Validate from '../mixins/validate';
 
 export default {
   name: 'TheSelect',
-  mixins: [ Emitter, Validate ],
+  mixins: [ Validate, Base ],
   props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
   computed: {
     msg: {
@@ -56,14 +58,10 @@ export default {
         //       }, this.$store.state.formValue)
       },
       set (value) {
-        this.dispatch('SchemaForm', 'on-set-form-data', {
+        EventBus.$emit('on-set-form-data', {
           key: this.keyName,
           value
         });
-        // this.$store.commit('setFormData', {
-        //   key: this.keyName,
-        //   value
-        // });
       }
     },
     selectVal () {
@@ -72,23 +70,16 @@ export default {
         })[0];
     }
   },
-  mounted() {
-    this.dispatch('SchemaForm', 'on-form-item-add', this);
-  },
   methods: {
     toggle() {
       this.selectVisible = !this.selectVisible;
     },
     select(value) {
       if(this.msg !== value) {
-        this.dispatch('SchemaForm', 'on-set-form-data', {
+        EventBus.$emit('on-set-form-data', {
           key: this.keyName,
           value
         });
-        // this.$store.commit('setFormData', {
-        //   key: this.keyName,
-        //   value
-        // });
       }
       this.toggle();
       // 如果立即执行validate,validate函数中拿到的objVal是当前的objVal，

@@ -22,12 +22,14 @@
 
 <script>
 
-import Emitter from '../emitter';
-import Validate from '../validate';
+import EventBus from '../eventBus';
+//mixin
+import Base from '../mixins/base';
+import Validate from '../mixins/validate';
 
 export default {
   name: 'TheCheckbox',
-  mixins: [ Emitter, Validate ],
+  mixins: [ Validate, Base ],
   props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
   computed: {
     msg: {
@@ -35,19 +37,16 @@ export default {
         return this.objVal;
       },
       set (value) {
-        this.dispatch('SchemaForm', 'on-set-form-data', {
+        EventBus.$emit('on-set-form-data', {
           key: this.keyName,
           value
         });
-        // this.$store.commit('setFormData', {
+        // this.dispatch('SchemaForm', 'on-set-form-data', {
         //   key: this.keyName,
         //   value
         // });
       }
     }
-  },
-  mounted() {
-    this.dispatch('SchemaForm', 'on-form-item-add', this);
   },
   methods: {
     handleChange() {

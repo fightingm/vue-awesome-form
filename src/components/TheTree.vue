@@ -26,7 +26,6 @@ import TheCheckbox from './TheCheckbox';
 import TheAddInput from './TheAddInput';
 import TheTable from './TheTable';
 
-
 export default {
   name: 'TheTree',
   components: {

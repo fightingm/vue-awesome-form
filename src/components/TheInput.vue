@@ -14,12 +14,14 @@
 
 <script>
 
-import Emitter from '../emitter';
-import Validate from '../validate';
+import EventBus from '../eventBus';
+//mixin
+import Base from '../mixins/base';
+import Validate from '../mixins/validate';
 
 export default {
   name: 'TheInput',
-  mixins: [ Emitter, Validate ],
+  mixins: [ Validate, Base ],
   props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName', 'theFormat'],
   computed: {
     msg: {
@@ -27,24 +29,12 @@ export default {
         return this.objVal;
       },
       set: function(value) {
-        this.dispatch('SchemaForm', 'on-set-form-data', {
+        EventBus.$emit('on-set-form-data', {
           key: this.keyName,
           value
         });
-        // this.$store.commit('setFormData', {
-        //   key: this.keyName,
-        //   value
-        // });
       }
     }
-  },
-  mounted() {
-    this.dispatch('SchemaForm', 'on-form-item-add', this);
-    // Object.defineProperty(this, 'initialValue', {
-    //     value: this.msg
-    // });
-    // 下面这种做法会抛出警告
-    // this.$set(this, 'initialValue', this.msg);
   },
   methods: {
     handleBlur(e) {

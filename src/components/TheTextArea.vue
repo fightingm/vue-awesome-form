@@ -1,58 +1,17 @@
 <template>
-  <!-- <div :class="['jf-form-item', noLabel ? 'jf-form-item-noLabel' : 'jf-form-item-hasLabel' ]">
-    <label class="jf-form-item-label" v-if="!noLabel">{{title}}</label>
-    <div class="jf-form-item-content">
-      <div class="jf-input-wrapper jf-input-type">
-        <textarea v-model="msg" wrap="soft" autocomplete="off" spellcheck="false" rows="2" class="jf-input" @blur="handleBlur"></textarea>
-      </div>
-      <div class="jf-form-item-error-tip" v-if="showValidate">{{validateInfo}}</div>    
-    </div>
-  </div> -->
   <the-input v-bind="$props" theFormat="textarea"></the-input>
 </template>
 
 <script>
 
 import TheInput from './TheInput';
-// import Emitter from '../emitter';
-// import Validate from '../validate';
 
 export default {
   name: 'TheTextarea',
   components: {
     TheInput
   },
-  // mixins: [ Emitter, Validate ],
-  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
-  // computed: {
-  //   msg: {
-  //     get: function() {
-  //       return this.objVal;
-  //     },
-  //     set: function(value) {
-  //       this.dispatch('SchemaForm', 'on-set-form-data', {
-  //         key: this.keyName,
-  //         value
-  //       });
-  //     }
-  //   }
-  // },
-  // mounted() {
-  //   this.dispatch('SchemaForm', 'on-form-item-add', this);
-  // },
-  // methods: {
-  //   handleBlur(e) {
-  //     const val = e.target.value;
-  //     this.validate();
-  //   }
-  // },
-  // data () {
-  //   return {
-  //     keyName: this.objKey,
-  //     validateState: '',
-  //     validateMessage: ''
-  //   }
-  // }
+  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName']
 }
 </script>
 
