@@ -19,6 +19,7 @@
 import TheTitle from './TheTitle';
 import TheInput from './TheInput';
 import ThePassInput from './ThePassInput';
+import TheNumberInput from './TheNumberInput';
 import TheTextArea from './TheTextArea';
 import TheSelect from './TheSelect';
 import TheRadio from './TheRadio';
@@ -31,6 +32,7 @@ export default {
   components: {
     TheTitle,
     TheInput,
+    TheNumberInput,
     ThePassInput,
     TheTextArea,
     TheSelect,

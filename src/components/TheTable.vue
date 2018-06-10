@@ -37,10 +37,10 @@
           </table>
         </div> 
       </div>
-      <div class="jf-form-item-error-tip" v-if="validateState === 'error'">{{validateMessage}}</div>        
+      <div class="jf-form-item-error-tip" v-if="showValidate">{{validateInfo}}</div>      
     </div>
     <div style="text-align: right; margin-top: 10px;">
-      <Button @click="add" type="primary">添加一行</Button>
+      <Button @click="add" type="primary">{{addText || 添加一行}}</Button>
     </div>
   </div>
 </template>
@@ -48,39 +48,44 @@
 <script>
 import TheInput from './TheInput';
 import ThePassInput from './ThePassInput';
+import TheNumberInput from './TheNumberInput';
 import TheTextArea from './TheTextArea';
 import TheSelect from './TheSelect';
 import TheRadio from './TheRadio';
 import TheCheckbox from './TheCheckbox';
 import Button from './button';
 import schema from 'async-validator';
-import EventBus from '../eventBus';
+
+// utils
+import { orderProperty, EventBus } from '../utils'
 
 //mixin
 import Base from '../mixins/base';
+import Validate from '../mixins/validate';
 
 export default {
   name: 'TheTable',
-  mixins: [Base],
+  mixins: [Base, Validate],
   components: {
     TheInput,
     ThePassInput,
+    TheNumberInput,
     TheTextArea,
     TheSelect,
     TheRadio,
     TheCheckbox,
     Button
   },
-  props: ['title', 'objKey', 'objVal', "addDefault", "columns", "noLabel", "rules"],
+  props: ['title', 'objKey', 'objVal', "addDefault", "addText", "columns", "noLabel", "rules"],
   computed: {
-    curVal() {
+    msg() {
       return this.objVal;
       //  return this.keyName.reduce((pre, cur) => {
       //           return pre[cur];
       //         }, this.$store.state.formValue)
     },
     orderColumns() {
-      return this.orderProperty(this.columns);
+      return orderProperty(this.columns);
     }
   },
   created() {
@@ -96,8 +101,6 @@ export default {
         }
         return pre[cur] = pre[cur] || {}
       }, this.validateArray);
-      // this.validateArray[obj.index][obj.key] = obj.validateObj;
-      // this.validateArray.splice(obj.index, 1, obj);
       return false;
     })
   },
@@ -118,7 +121,7 @@ export default {
       return this.keyName.concat([index, key]);
     },
     getObjVal(index, key) {
-      return this.curVal[index][key];
+      return this.msg[index][key];
     },
     add() {
       // 这里一定要特别注意不能直接concat addDefault
@@ -128,11 +131,11 @@ export default {
       const newAdd = {
         ...this.addDefault
       };
-      const newVal = this.curVal.concat([newAdd]);
+      const newVal = this.msg.concat([newAdd]);
       this.setFormData(newVal);
     },
     del(index) {
-      const newVal = this.curVal.filter((item, idx) => {
+      const newVal = this.msg.filter((item, idx) => {
         return idx !== index;
       });
       this.validateArray.splice(index, 1);
@@ -143,51 +146,6 @@ export default {
         key: this.keyName,
         value
       });
-    },
-    // 根据propertyOrder 从小到大排序
-    orderProperty(oldObj) {
-      // 先遍历对象，生成数组
-      // 对数组排序
-      // 生成一个新的对象
-      const keys = Object.keys(oldObj);
-      // 如果对象只有一个字段，不需要排序
-      if(keys.length <= 1) return oldObj;
-      return keys.map(key => {
-        return {
-          key,
-          val: oldObj[key]
-        };
-      }).sort((pre, cur) => {
-        return (pre.val.propertyOrder || 999) - (cur.val.propertyOrder || 999);
-      });
-      // .reduce((pre, cur) => {
-      //   pre[cur.key] = cur.val;
-      //   return pre;
-      // }, {});
-    },
-    validate() {
-      return new Promise((resolve, reject) => {
-        if(!this.rules) reject('norule');
-        var descriptor = {
-          name: this.rules
-        };
-        var validator = new schema(descriptor);
-        validator.validate({name: this.objVal}, (err, fields) => {
-          this.validateState = !err ? 'success' : 'error';
-          this.validateMessage = err ? err[0].message : '';
-          if(err) {
-            resolve({
-              title: this.title,
-              status: false
-            })
-          }else {
-            resolve({
-              title: this.title,
-              status: true
-            })
-          }
-        })
-      })
     }
   },
   data () {

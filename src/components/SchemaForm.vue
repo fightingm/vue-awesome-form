@@ -16,7 +16,9 @@
 <script>
 import TheTree from './TheTree'
 import Button from './button'
-import EventBus from '../eventBus'
+// utils
+import { orderProperty, EventBus, cloneDeep } from '../utils'
+
 // 表单验证这里参考iview的做法，通过mixin的方式将事件emitter注入到每个组件
 // 通过事件的广播与派发，input组件blur之后向上dispatch事件，
 // 然后在根组件统一负责表单的验证
@@ -46,28 +48,7 @@ export default {
         this.formValue = this.cloneDeep(value);
     },
     cloneDeep(source) {
-      // 只适用于对象中没有函数
-      return JSON.parse(JSON.stringify(source));
-      // var type = Object.prototype.toString.call(source);
-      // let obj;
-      // if(type === '[object Array]'){
-      //     obj = [];
-      // } else if(type === '[object Object]'){
-      //     obj = {};
-      // } else {
-      //     //不再具有下一层次
-      //     return source;
-      // }
-      // if(type === '[object Array]'){
-      //     for(let i = 0, len = source.length; i < len; i++){
-      //         obj.push(this.cloneDeep(source[i]));
-      //     }
-      // } else if(type === '[object Object]'){
-      //     for(let key in source){
-      //         obj[key] = this.cloneDeep(source[key]);
-      //     }
-      // }
-      // return obj;
+      return cloneDeep(source);
     },
     setFormData(payload) {
         const { key, value } = payload;
@@ -90,6 +71,7 @@ export default {
       this.fields.forEach((field, index) => {
         field.validate().then(res => {
           const { title, status } = res;
+          console.log(title);
           if(!status) {
             err = true;
           }
@@ -101,15 +83,6 @@ export default {
         })
       })
     },
-    // handleSubmit() {
-    //   this.validate(valid => {
-    //     if(valid) {
-    //       console.log('验证成功', this.formValue);
-    //     }else {
-    //       console.log('验证失败');
-    //     }
-    //   });
-    // },
     // 三种思路，第一种方式在每个组件保存初始值，reset的时候循环调用每一个reset事件
     // 第二种思路，根组件保存一个深拷贝的初始值，然后统一reset
     // 第二种思路只能恢复初始值，没法处理组件内的状态，比如校验信息
@@ -121,25 +94,8 @@ export default {
       });
     },
      // 根据propertyOrder 从小到大排序
-    orderProperty(oldObj) {
-      // 先遍历对象，生成数组
-      // 对数组排序
-      // 生成一个新的对象
-      const keys = Object.keys(oldObj);
-      // 如果对象只有一个字段，不需要排序
-      if(keys.length <= 1) return oldObj;
-      return keys.map(key => {
-        return {
-          key,
-          val: oldObj[key]
-        };
-      }).sort((pre, cur) => {
-        return (pre.val.propertyOrder || 999) - (cur.val.propertyOrder || 999);
-      });
-      // .reduce((pre, cur) => {
-      //   pre[cur.key] = cur.val;
-      //   return pre;
-      // }, {});
+    orderProperty(obj) {
+      return orderProperty(obj);
     }
   },
   data () {

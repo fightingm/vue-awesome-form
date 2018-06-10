@@ -40,7 +40,8 @@
 
 <script>
 
-import EventBus from '../eventBus';
+// utils
+import { EventBus } from '../utils'
 //mixin
 import Base from '../mixins/base';
 import Validate from '../mixins/validate';
@@ -58,10 +59,10 @@ export default {
         //       }, this.$store.state.formValue)
       },
       set (value) {
-        EventBus.$emit('on-set-form-data', {
-          key: this.keyName,
-          value
-        });
+        // EventBus.$emit('on-set-form-data', {
+        //   key: this.keyName,
+        //   value
+        // });
       }
     },
     selectVal () {

@@ -18,9 +18,9 @@
           </div>
         </the-input>
       </div>
-      <div class="jf-form-item-error-tip" v-if="validateState === 'error'">{{validateMessage}}</div>  
+      <div class="jf-form-item-error-tip" v-if="showValidate">{{validateInfo}}</div> 
       <div style="text-align: right; margin-top: 10px; margin-bottom: 10px;">
-        <Button @click="add" type="primary">添加</Button>
+        <Button @click="add" type="primary">{{addText || '添加'}}</Button>
       </div>  
     </div>
   </div>
@@ -47,20 +47,22 @@
 import TheInput from './TheInput';
 import Button from './button';
 import schema from 'async-validator';
-import EventBus from '../eventBus'
+// utils
+import { EventBus } from '../utils'
 //mixin
 import Base from '../mixins/base';
+import Validate from '../mixins/validate';
 
 export default {
   name: 'TheAddInput',
-  mixins: [Base],
+  mixins: [Base, Validate],
   components: {
     TheInput,
     Button
   },
-  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules'],
+  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'addDefault', 'addText'],
   computed: {
-    curVal() {
+    msg() {
       return this.objVal;
       //  return this.keyName.reduce((pre, cur) => {
       //           return pre[cur];
@@ -78,12 +80,6 @@ export default {
     // 使用index做key会带来一些列的问题，所以使用shortid为数组的每一项生成唯一的id
     // 但是这样会导致每次输入都会产生新的key，和上次的key不一样，所以input会失去焦点
     // 最终解决方案，在父组件保存子组件的校验状态，子组件校验的时候通知父组件，然后父组件把状态传给子组件
-    unique(obj) {
-      return obj.map(item => {
-        item._shortid = shortid.generate();
-        return item;
-      });
-    },
     getValidateObj(index) {
       return this.validateArray[index] || {
         validateState: '',
@@ -94,28 +90,19 @@ export default {
       return this.keyName.concat([index]);
     },
     getObjVal(index) {
-      return this.curVal[index];
+      return this.msg[index];
     },
     add() {
-      const newVal = this.curVal.concat([""]);
+      const newAdd =  this.addDefault;
+      const newVal = this.msg.concat([newAdd]);
       this.setFormData(newVal);
     },
     // 删除的时候应该做点什么，这里可能有坑
     del(index) {
-      const newVal = this.curVal.filter((item, idx) => {
+      const newVal = this.msg.filter((item, idx) => {
         return idx !== index;
       });
       this.validateArray.splice(index, 1);
-      this.setFormData(newVal);
-    },
-    handleInput(index, e) {
-      var value = e.target.value;
-      const newVal = this.curVal.map((item, idx) => {
-        if(idx === index) {
-          return value;
-        }
-        return item;
-      });
       this.setFormData(newVal);
     },
     setFormData(value) {
@@ -123,34 +110,6 @@ export default {
         key: this.keyName,
         value
       });
-      // this.dispatch('SchemaForm', 'on-set-form-data', {
-      //   key: this.keyName,
-      //   value
-      // });
-    },
-    validate() {
-      return new Promise((resolve, reject) => {
-        if(!this.rules) reject('norule');
-        let descriptor = {
-          name: this.rules.myRule
-        };
-        let validator = new schema(descriptor);
-        validator.validate({name: this.objVal}, (err, fields) => {
-          this.validateState = !err ? 'success' : 'error';
-          this.validateMessage = err ? err[0].message : '';
-          if(err) {
-            resolve({
-              title: this.title,
-              status: false
-            });
-          }else {
-            resolve({
-              title: this.title,
-              status: true
-            });
-          }
-        })
-      })
     }
   },
   data () {

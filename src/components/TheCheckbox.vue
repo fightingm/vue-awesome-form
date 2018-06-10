@@ -22,7 +22,9 @@
 
 <script>
 
-import EventBus from '../eventBus';
+// utils
+import { EventBus } from '../utils'
+
 //mixin
 import Base from '../mixins/base';
 import Validate from '../mixins/validate';
@@ -41,10 +43,6 @@ export default {
           key: this.keyName,
           value
         });
-        // this.dispatch('SchemaForm', 'on-set-form-data', {
-        //   key: this.keyName,
-        //   value
-        // });
       }
     }
   },

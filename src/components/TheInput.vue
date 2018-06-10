@@ -14,7 +14,9 @@
 
 <script>
 
-import EventBus from '../eventBus';
+// utils
+import { EventBus } from '../utils'
+
 //mixin
 import Base from '../mixins/base';
 import Validate from '../mixins/validate';
@@ -29,6 +31,10 @@ export default {
         return this.objVal;
       },
       set: function(value) {
+        if(this.theFormat === 'number') {
+          value = Number(value);
+        }
+        console.log(typeof(value));
         EventBus.$emit('on-set-form-data', {
           key: this.keyName,
           value
@@ -37,8 +43,7 @@ export default {
     }
   },
   methods: {
-    handleBlur(e) {
-      const val = e.target.value;
+    handleBlur() {
       this.validate();
     }
   },

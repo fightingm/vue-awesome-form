@@ -1,5 +1,5 @@
 
-import EventBus from '../eventBus';
+import { EventBus } from '../utils';
 
 export default {
     mounted() {

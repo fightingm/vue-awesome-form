@@ -1,10 +1,7 @@
 import schema from 'async-validator';
-import EventBus from '../eventBus';
+import { EventBus } from '../utils';
 
 export default {
-    beforeDestroy () {
-        EventBus.$emit('on-form-item-remove', this);
-    },
     computed: {
         showValidate() {
             if(this.validateObj !== undefined) {
@@ -48,13 +45,15 @@ export default {
         validate() {
             return new Promise((resolve, reject) => {
                 if(!this.rules) reject('norule');
+                // 对于addinput包含本身的rule和child的rule
                 let descriptor = {
-                    name: this.rules
+                    name: this.rules.myRule || this.rules
                 };
                 let validator = new schema(descriptor);
                 validator.validate({name: this.msg}, (err, fields) => {
                     let state = !err ? 'success' : 'error';
                     let msg = err ? err[0].message : '';
+                    console.log(typeof(this.msg), state, msg);
                     if(this.validateObj !== undefined) {
                         EventBus.$emit('on-input-validate', {
                             parentName: this.parentName,

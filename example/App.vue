@@ -55,10 +55,11 @@ export default {
                         }
                     },
                     "age": {
-                        "type": "TheInput",
+                        "type": "TheNumberInput",
                         "title": "年龄",
                         "rules": [
                           {
+                            "type": "number",
                             "required": true,
                             "message": "The age cannot be empty"
                           }
@@ -161,7 +162,8 @@ export default {
                     "education": {
                       "type": "TheAddInput",
                       "title": "教育信息",
-                      "addText": "添加",
+                      "addText": "添加教育信息",
+                      "addDefault": "哈哈哈",
                       "rules": {
                         "myRule": {
                             "type": "array",
@@ -273,6 +275,7 @@ export default {
                         "gender": "",
                         "interests": []
                       },
+                      "addText": "添加表格行",
                       "rules": {
                         "type": "array",
                         "required": true,
@@ -306,19 +309,19 @@ export default {
         },
         "value": {
             "register": {
-                "name": "",
-                "age": "25",
-                "gender": '',
-                "interests": [],
+                "name": "wqe",
+                "age": 25,
+                "gender": 1,
+                "interests": [1],
                 "location": {
                   "province": "北京省",
                   "city": "北京市"
                 },
                 "introduce": '',
-                "education": [''],
-                "job": "",
+                "education": ['11'],
+                "job": "internet",
                 "pets": [{
-                  "type": "",
+                  "type": "21",
                   "name": "Walter",
                   "gender": 1,
                   "interests": [1, 2]

@@ -22,7 +22,9 @@
 
 <script>
 
-import EventBus from '../eventBus';
+// utils
+import { EventBus } from '../utils'
+
 //mixin
 import Base from '../mixins/base';
 import Validate from '../mixins/validate';
