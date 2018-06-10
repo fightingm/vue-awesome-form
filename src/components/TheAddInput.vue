@@ -61,14 +61,6 @@ export default {
     Button
   },
   props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'addDefault', 'addText'],
-  computed: {
-    msg() {
-      return this.objVal;
-      //  return this.keyName.reduce((pre, cur) => {
-      //           return pre[cur];
-      //         }, this.$store.state.formValue)
-    }
-  },
   created() {
     EventBus.$on('on-input-validate', obj => {
       if(obj.parentName !== 'TheAddInput') return;
@@ -93,9 +85,7 @@ export default {
       return this.msg[index];
     },
     add() {
-      const newAdd =  this.addDefault;
-      const newVal = this.msg.concat([newAdd]);
-      this.setFormData(newVal);
+      this.msg.push(this.addDefault)
     },
     // 删除的时候应该做点什么，这里可能有坑
     del(index) {
@@ -103,13 +93,7 @@ export default {
         return idx !== index;
       });
       this.validateArray.splice(index, 1);
-      this.setFormData(newVal);
-    },
-    setFormData(value) {
-      EventBus.$emit('on-set-form-data', {
-        key: this.keyName,
-        value
-      });
+      this.msg = newVal;
     }
   },
   data () {

@@ -78,12 +78,6 @@ export default {
   },
   props: ['title', 'objKey', 'objVal', "addDefault", "addText", "columns", "noLabel", "rules"],
   computed: {
-    msg() {
-      return this.objVal;
-      //  return this.keyName.reduce((pre, cur) => {
-      //           return pre[cur];
-      //         }, this.$store.state.formValue)
-    },
     orderColumns() {
       return orderProperty(this.columns);
     }
@@ -124,28 +118,18 @@ export default {
       return this.msg[index][key];
     },
     add() {
-      // 这里一定要特别注意不能直接concat addDefault
+      // 这里一定要特别注意不能直接push addDefault
       // 如果直接传递addDefault，后面的每一个store保存的都是同一个对象
       // 新增的每一项状态都会共享
       // 下面这种方式是一种浅拷贝
-      const newAdd = {
-        ...this.addDefault
-      };
-      const newVal = this.msg.concat([newAdd]);
-      this.setFormData(newVal);
+      this.msg.push({...this.addDefault});
     },
     del(index) {
       const newVal = this.msg.filter((item, idx) => {
         return idx !== index;
       });
       this.validateArray.splice(index, 1);
-      this.setFormData(newVal);
-    },
-    setFormData(value) {
-      EventBus.$emit('on-set-form-data', {
-        key: this.keyName,
-        value
-      });
+      this.msg = newVal;
     }
   },
   data () {

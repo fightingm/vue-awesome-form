@@ -33,21 +33,9 @@ export default {
   name: 'TheCheckbox',
   mixins: [ Validate, Base ],
   props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
-  computed: {
-    msg: {
-      get () {
-        return this.objVal;
-      },
-      set (value) {
-        EventBus.$emit('on-set-form-data', {
-          key: this.keyName,
-          value
-        });
-      }
-    }
-  },
   methods: {
     handleChange() {
+      // this.validate();
       this.asyncValidate();
     }
   },

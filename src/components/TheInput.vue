@@ -25,23 +25,6 @@ export default {
   name: 'TheInput',
   mixins: [ Validate, Base ],
   props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName', 'theFormat'],
-  computed: {
-    msg: {
-      get: function() {
-        return this.objVal;
-      },
-      set: function(value) {
-        if(this.theFormat === 'number') {
-          value = Number(value);
-        }
-        console.log(typeof(value));
-        EventBus.$emit('on-set-form-data', {
-          key: this.keyName,
-          value
-        });
-      }
-    }
-  },
   methods: {
     handleBlur() {
       this.validate();

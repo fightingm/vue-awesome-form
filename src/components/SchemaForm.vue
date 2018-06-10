@@ -71,7 +71,6 @@ export default {
       this.fields.forEach((field, index) => {
         field.validate().then(res => {
           const { title, status } = res;
-          console.log(title);
           if(!status) {
             err = true;
           }

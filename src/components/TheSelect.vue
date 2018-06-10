@@ -51,20 +51,6 @@ export default {
   mixins: [ Validate, Base ],
   props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
   computed: {
-    msg: {
-      get () {
-        return this.objVal;
-        // return this.keyName.reduce((pre, cur) => {
-        //         return pre[cur];
-        //       }, this.$store.state.formValue)
-      },
-      set (value) {
-        // EventBus.$emit('on-set-form-data', {
-        //   key: this.keyName,
-        //   value
-        // });
-      }
-    },
     selectVal () {
         return this.options.filter(item => {
           return item.value === this.objVal;
@@ -77,10 +63,7 @@ export default {
     },
     select(value) {
       if(this.msg !== value) {
-        EventBus.$emit('on-set-form-data', {
-          key: this.keyName,
-          value
-        });
+        this.msg = value;
       }
       this.toggle();
       // 如果立即执行validate,validate函数中拿到的objVal是当前的objVal，
