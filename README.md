@@ -1,18 +1,18 @@
 # vue-awesome-form
 
-> 类似json-editor的vue表单组件
+> a vue form component just like json-editor
 
-## 安装
+## Install
 
 ``` bash
-# 可以通过npm或者yarn安装
+# npm/yarn
 npm install vue-awesome-form 
 yarn add vue-awesome-form
 ```
 
-## 使用
+## Use
 
-注册组件
+register the component
 ``` js
 import Vue from 'vue'
 import SchemaForm from 'vue-awesome-form'
@@ -21,7 +21,7 @@ import 'vue-awesome-form/dist/main.css'
 Vue.component('schema-form', SchemaForm)
 ```
 
-在组件中使用
+use in component
 ```html
 <schema-form
   ref="schemaForm"
@@ -30,12 +30,91 @@ Vue.component('schema-form', SchemaForm)
 ></schema-form>
 ```
 
-CDN使用
+CDN
 ```html
 <script src="https://unpkg.com/vue-awesome-form@latest/dist/main.js"></script>
 <script src="https://unpkg.com/vue-awesome-form@latest/dist/main.css"></script>
 ```
 
-demo地址： <https://jsrun.net/bKgKp/embedded/all/light/>
+Props:
 
-上面的demo包含了组件的所有功能及支持的表单项。
+schema:an object like this
+
+```json
+    "register": {
+        "type": "TheTree",
+        "title": "register",
+        "properties": {
+            "name": {
+                "type": "TheInput",
+                "title": "name",
+                "rules": {
+                    "required": true,
+                    "message": "The name cannot be empty"
+                }
+            },
+            "location": {
+                "type": "TheTree",
+                "title": "address",
+                "propertyOrder": 3,
+                "properties": {
+                    "province": {
+                        "type": "TheInput",
+                        "title": "province",
+                        "rules": {
+                            "required": true,
+                            "message": "The province cannot be empty"
+                        }
+                    },
+                    "city": {
+                        "type": "TheInput",
+                        "title": "city",
+                        "rules": {
+                            "required": true,
+                            "message": "The city cannot be empty"
+                        }
+                    }
+                }
+            }
+        }
+    }
+```
+
+value: the initValue of the form
+
+```json
+"register": {
+    "name": "wqe",
+    "location": {
+      "province": "beijing",
+      "city": "beijing"
+    }
+}
+```
+
+methods:
+
+validate: validate the form and return the result and the value of the form
+
+resetFields: reset the form to init value
+
+```js
+handleSubmit() {
+  this.$refs.schemaForm.validate((err, values) => {
+    if(err) {
+      console.log('fail');
+    } else {
+      console.log('succ', values);
+    }
+  })
+},
+handleReset() {
+  this.$refs.schemaForm.resetFields();
+}
+```
+
+## Demo
+
+the following demo contains all the functions of the component and the supported form items.
+
+demo： <https://jsrun.net/bKgKp/embedded/all/light/>
