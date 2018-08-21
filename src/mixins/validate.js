@@ -1,5 +1,4 @@
 import schema from 'async-validator';
-import { EventBus } from '../utils';
 
 export default {
     computed: {
@@ -24,7 +23,7 @@ export default {
                 // 按理说无法修改props的值，但是这里可以修改，控制台也没有警告
                 // this.validateObj.validateState = '';
                 // this.validateObj.validateMessage = '';
-                EventBus.$emit('on-input-validate', {
+                this.$props.EVENT_BUS.$emit('on-input-validate', {
                     parentName: this.parentName,
                     keyArr: this.keyArr,
                     validateObj: {
@@ -54,7 +53,7 @@ export default {
                     let state = !err ? 'success' : 'error';
                     let msg = err ? err[0].message : '';
                     if(this.validateObj !== undefined) {
-                        EventBus.$emit('on-input-validate', {
+                        this.$props.EVENT_BUS.$emit('on-input-validate', {
                             parentName: this.parentName,
                             keyArr: this.keyArr,
                             validateObj: {

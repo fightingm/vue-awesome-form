@@ -117,6 +117,6 @@ handleReset() {
 
 the following demo contains all the functions of the component and the supported form items.
 
-demo： <https://jsrun.net/bKgKp/embedded/all/light/>
+demo： <http://jsrun.net/bKgKp/embedded/all/light/>
 
 This [article](https://juejin.im/post/5b1cdd29e51d4506bb3a771d) introduces the detailed implementation of this component. 

@@ -5,6 +5,7 @@
       :key="item.key"
       :objKey="[item.key]"
       :objVal="formValue[item.key]"
+      :EVENT_BUS="EVENT_BUS"
       v-bind="item.val"></the-tree>
     <!-- <div style="text-align: center; margin-top: 10px;">
       <Button @click="handleReset" type="warning">重置</Button>
@@ -17,7 +18,7 @@
 import TheTree from './TheTree'
 import Button from './button'
 // utils
-import { orderProperty, EventBus, cloneDeep } from '../utils'
+import { orderProperty, createEventBus, cloneDeep } from '../utils'
 
 // 表单验证这里参考iview的做法，通过mixin的方式将事件emitter注入到每个组件
 // 通过事件的广播与派发，input组件blur之后向上dispatch事件，
@@ -31,15 +32,15 @@ export default {
   props: ['schema', 'value'],
   created() {
     this.initFormData(this.value);
-    EventBus.$on('on-form-item-add', field => {
+    this.EVENT_BUS.$on('on-form-item-add', field => {
       if(field) this.fields.push(field);
       return false;
     });
-    EventBus.$on('on-form-item-remove', (field) => {
+    this.EVENT_BUS.$on('on-form-item-remove', (field) => {
       if (field) this.fields.splice(this.fields.indexOf(field), 1);
       return false;
     });
-    EventBus.$on('on-set-form-data', payload => {
+    this.EVENT_BUS.$on('on-set-form-data', payload => {
       this.setFormData(payload);
     });
   },
@@ -101,7 +102,8 @@ export default {
     return {
       "initFormValue": {},
       "formValue": {},
-      "fields": []
+      "fields": [],
+      "EVENT_BUS": createEventBus()
     }
   }
 }

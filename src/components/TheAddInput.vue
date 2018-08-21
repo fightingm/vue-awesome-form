@@ -12,7 +12,8 @@
           :keyArr="[index]"
           parentName="TheAddInput"
           :rules="rules.childRule"
-          :noLabel="true">
+          :noLabel="true"
+          :EVENT_BUS="EVENT_BUS">
           <div style="margin-left: 8px">
             <Button @click="del(index)" type="warning">删除</Button>
           </div>
@@ -47,8 +48,7 @@
 import TheInput from './TheInput';
 import Button from './button';
 import schema from 'async-validator';
-// utils
-import { EventBus } from '../utils'
+
 //mixin
 import Base from '../mixins/base';
 import Validate from '../mixins/validate';
@@ -60,9 +60,9 @@ export default {
     TheInput,
     Button
   },
-  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'addDefault', 'addText'],
+  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'addDefault', 'addText', 'EVENT_BUS'],
   created() {
-    EventBus.$on('on-input-validate', obj => {
+    this.$props.EVENT_BUS.$on('on-input-validate', obj => {
       if(obj.parentName !== 'TheAddInput') return;
       this.validateArray.splice(obj.keyArr[0], 1, obj.validateObj);
       return false;

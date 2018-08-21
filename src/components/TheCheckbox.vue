@@ -22,9 +22,6 @@
 
 <script>
 
-// utils
-import { EventBus } from '../utils'
-
 //mixin
 import Base from '../mixins/base';
 import Validate from '../mixins/validate';
@@ -32,7 +29,7 @@ import Validate from '../mixins/validate';
 export default {
   name: 'TheCheckbox',
   mixins: [ Validate, Base ],
-  props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName'],
+  props: ["options", 'title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName', 'EVENT_BUS'],
   methods: {
     handleChange() {
       // this.validate();

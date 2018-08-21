@@ -1,6 +1,8 @@
 import Vue from "vue";
 
-export const EventBus = new Vue();
+export const createEventBus = function () {
+    return new Vue()
+};
 
 // 根据propertyOrder 从小到大排序
 export function orderProperty(obj) {

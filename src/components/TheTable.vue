@@ -27,6 +27,7 @@
                     :keyArr="[index, col.key]"
                     parentName="TheTable"
                     :noLabel="true" 
+                    :EVENT_BUS="EVENT_BUS"
                     v-bind="col.val"></component>
                 </div>
               </td>
@@ -57,7 +58,7 @@ import Button from './button';
 import schema from 'async-validator';
 
 // utils
-import { orderProperty, EventBus } from '../utils'
+import { orderProperty } from '../utils'
 
 //mixin
 import Base from '../mixins/base';
@@ -76,14 +77,14 @@ export default {
     TheCheckbox,
     Button
   },
-  props: ['title', 'objKey', 'objVal', "addDefault", "addText", "columns", "noLabel", "rules"],
+  props: ['title', 'objKey', 'objVal', "addDefault", "addText", "columns", "noLabel", "rules", "EVENT_BUS"],
   computed: {
     orderColumns() {
       return orderProperty(this.columns);
     }
   },
   created() {
-    EventBus.$on('on-input-validate', obj => {
+    this.$props.EVENT_BUS.$on('on-input-validate', obj => {
       if(obj.parentName !== 'TheTable') return;
       obj.keyArr.reduce((pre, cur, curIndex, arr) => {
         if(curIndex === arr.length - 1) {

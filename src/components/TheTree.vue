@@ -8,6 +8,7 @@
         :is="item.val.type" 
         :objKey="getObjKeys(objKey, item.key)" 
         :objVal="getObjVal(item.key)"
+        :EVENT_BUS="EVENT_BUS"
         v-bind="item.val">
       </component>
     </div>
@@ -41,7 +42,7 @@ export default {
     TheAddInput,
     TheTable
   },
-  props: ['title', 'properties', 'objKey', 'objVal'],
+  props: ['title', 'properties', 'objKey', 'objVal', 'EVENT_BUS'],
   methods: {
     getObjVal(key) {
       return this.objVal[key];

@@ -1,6 +1,4 @@
 
-import { EventBus } from '../utils';
-
 export default {
     computed: {
         msg: {
@@ -11,7 +9,7 @@ export default {
                 // if(this.theFormat && this.theFormat === 'number') {
                 //     value = Number(value);
                 // }
-                EventBus.$emit('on-set-form-data', {
+                this.$props.EVENT_BUS.$emit('on-set-form-data', {
                     key: this.keyName,
                     value
                 });
@@ -19,9 +17,9 @@ export default {
         }
     },
     mounted() {
-        EventBus.$emit('on-form-item-add', this);
+        this.$props.EVENT_BUS.$emit('on-form-item-add', this);
     },
     beforeDestroy () {
-        EventBus.$emit('on-form-item-remove', this);
+        this.$props.EVENT_BUS.$emit('on-form-item-remove', this);
     }
 }

@@ -14,9 +14,6 @@
 
 <script>
 
-// utils
-import { EventBus } from '../utils'
-
 //mixin
 import Base from '../mixins/base';
 import Validate from '../mixins/validate';
@@ -24,7 +21,7 @@ import Validate from '../mixins/validate';
 export default {
   name: 'TheInput',
   mixins: [ Validate, Base ],
-  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName', 'theFormat'],
+  props: ['title', 'objKey', 'objVal', 'noLabel', 'rules', 'validateObj', 'keyArr', 'parentName', 'theFormat', 'EVENT_BUS'],
   methods: {
     handleBlur() {
       this.validate();
